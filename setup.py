@@ -15,6 +15,7 @@ install_requires = {
     'alembic >= 0.7.4',
     'click >= 3.3',
     'Flask >= 0.10.1',
+    'PyYAML>=3.11',
     'SQLAlchemy >= 0.9.8',
 }
 
@@ -44,9 +45,9 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_data={
         'alps': [
-            'migrations/env.py',
-            'migrations/script.py.mako',
-            'migrations/versions/*.py'
+            'alembic/env.py',
+            'alembic/script.py.mako',
+            'alembic/versions/*.py'
         ]
     },
     install_requires=install_requires,
