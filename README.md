@@ -35,7 +35,7 @@ $ sudo apt-get install build-essential
 컴파일하여 만들어졌습니다. `.less` 파일을 수정하기 위한 [도구](http://lesscss.org/)가 필요합니다.
 
 ```console
-sudo npm install -g less
+$ sudo npm install -g less
 ```
 
 ## 소스 코드 받기
@@ -78,8 +78,6 @@ $ source alps-env/bin/activate
 ```
 
 ## 필요한 외부 패키지 설치
-
-
 ```console
 $ pip install -e .[docs,tests]
 ```
@@ -100,9 +98,9 @@ $ pip install -e .[docs,tests]
 
 ### CSS
 `.less` 파일을 수정하고 변경사항을 반영하기 위해서는 Less 전처리기를 사용해야 합니다.
-프로젝트 루트라면, 다음과 같은 명령을 실행하세요.
+Template 폴더 내에 위치하고 있다면, 다음과 같은 명령을 실행하세요.
 ```console
-$ lessc alps/static/theme/Template/_less/main.less > alps/static/theme/Template/assets/css/main.css
+$ lessc _less/main.less > assets/css/main.css
 ```
 
 ## 서버 돌리기
