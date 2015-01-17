@@ -36,3 +36,6 @@ docs/_build/
 
 # IntelliJ/PyCharm project configuration 
 *.iml
+
+# Exception for example configuration file
+!example.cfg.yml
