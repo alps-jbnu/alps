@@ -10,7 +10,9 @@ def readme():
     except (IOError, OSError):
         return ''
 
-
+# To prevent merge conflict,
+# Sort package names by alphabetical order. (case-insensitive)
+# Don't miss a comma in the last line.
 install_requires = {
     'alembic >= 0.7.4',
     'click >= 3.3',
