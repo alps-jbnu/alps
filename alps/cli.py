@@ -23,8 +23,9 @@ def main():
 def runserver(debug, port, config):
     """Run ALPS server"""
 
-    config_dict = read_config(pathlib.Path(config))
-    initialize_app(app=app, config_dict=config_dict)
+    if config:
+        config_dict = read_config(pathlib.Path(config))
+        initialize_app(app=app, config_dict=config_dict)
     app.run(debug=debug, port=port)
 
 
