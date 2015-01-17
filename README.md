@@ -2,10 +2,9 @@
 *기본적으로, 패키지 관리로 APT를 사용하는 리눅스 배포판 기준으로 설명하고 있습니다.
 (추후 설명 보완예정)*
 
-Python 3.4 이상과 Git이 필요합니다.
-
+###Python 3.4 이상, Git
 ```console
-$ sudo apt-get install python3 git-core
+$ sudo apt-get install python3 git
 ```
 로 쉽게 설치할 수 있습니다.
 
@@ -14,13 +13,30 @@ $ sudo apt-get install python3 git-core
 [여기](https://www.python.org/downloads/)서 최신 버전의 파이썬을 다운로드 하십시오.
 압축을 풀고 해당 폴더 내에서,
 ```console
-./configure
-make
-make test
-sudo apt-get build-dep python3.4
-sudo make altinstall
+$ ./configure
+$ make
+$ make test
+$ sudo apt-get build-dep python3.4
+$ sudo make altinstall
 ```
 명령을 수행하면 됩니다.
+
+###Node.js
+npm을 사용하기 위해 Node.js가 필요합니다.
+
+```console
+$ curl -sL https://deb.nodesource.com/setup | sudo bash -
+$ sudo apt-get install nodejs
+$ sudo apt-get install build-essential
+```
+
+###Less
+사용하는 테마의 CSS 파일들은 [Less](http://en.wikipedia.org/wiki/Less_%28stylesheet_language%29)로
+컴파일하여 만들어졌습니다. `.less` 파일을 수정하기 위한 [도구](http://lesscss.org/)가 필요합니다.
+
+```console
+sudo npm install -g less
+```
 
 ## 소스 코드 받기
 ```console
@@ -62,6 +78,8 @@ $ source alps-env/bin/activate
 ```
 
 ## 필요한 외부 패키지 설치
+
+
 ```console
 $ pip install -e .[docs,tests]
 ```
@@ -71,11 +89,21 @@ $ pip install -e .[docs,tests]
 서버를 돌리려면, 설정 파일이 필요합니다. 설정 파일은 YAML 포맷으로 작성됩니다.
 예제 파일로 프로젝트 내 `example.cfg.yml` 파일을 참조하세요.
 
-## 데이터베이스 생성 및 연동
+## 데이터베이스 생성 및 연동하기
 
 ## 데이터베이스 마이그레이션
 
-## 데이터베이스 마이그레이션 스크립트
+## 데이터베이스 마이그레이션 스크립트 작성하기
+
+## 테마 수정하기
+`alps/static/theme/Documentation`을 참조하세요.
+
+### CSS
+`.less` 파일을 수정하고 변경사항을 반영하기 위해서는 Less 전처리기를 사용해야 합니다.
+프로젝트 루트라면, 다음과 같은 명령을 실행하세요.
+```console
+$ lessc alps/static/theme/Template/_less/main.less > alps/static/theme/Template/assets/css/main.css
+```
 
 ## 서버 돌리기
 개발 시 테스트나 디버깅 목적으로 Flask built-in 서버를 이용할 수 있습니다.
