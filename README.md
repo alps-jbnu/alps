@@ -83,6 +83,15 @@ $ pip install -e .[docs,tests]
 ```
 가상환경에서 수행하는 것을 잊지 마세요.
 
+## pre-commit hook
+커밋 전, [PEP8](https://www.python.org/dev/peps/pep-0008/) 확인을 위한 커밋 훅을 설정합니다.
+PEP8에 명시된, 파이썬 코드 스타일을 따르도록 합니다.
+
+```console
+$ cp hooks/pre-commit .git/hooks/
+$ pip install flake8
+```
+
 ## 설정 파일 만들기
 서버를 돌리려면, 설정 파일이 필요합니다. 설정 파일은 YAML 포맷으로 작성됩니다.
 예제 파일로 프로젝트 내 `example.cfg.yml` 파일을 참조하세요.
