@@ -73,6 +73,6 @@ def migration(config, alembic_command):
     # Call Alembic command
     subprocess.call(alembic_command)
 
-    # Restore alembic.ini and change working directory to initial directory 
+    # Restore alembic.ini and change working directory to initial directory
     os.rename(ini_backup_path, ini_path)
     os.chdir(working_dir)
