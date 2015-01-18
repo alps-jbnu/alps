@@ -1,3 +1,13 @@
-#!/bin/sh
-set -e
-flake8 -j auto .
+#!/bin/bash
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+MAIN_LESS="$GIT_ROOT/alps/static/theme/Template/_less/main.less"
+MAIN_CSS="$GIT_ROOT/alps/static/theme/Template/assets/css/main.css"
+ADDED_LESS="$(git status -s|grep -E '^[MADRC]'|grep -E '[.]less$')"
+if [[ "$ADDED_LESS" != "" ]]; then
+  echo "Compiling less..."
+  lessc $MAIN_LESS > $MAIN_CSS
+  echo "Adding main.css to index..."
+  git add $MAIN_CSS
+fi
+echo "Checking PEP8..."
+flake8 -j auto . || exit 1

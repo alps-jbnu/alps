@@ -85,10 +85,12 @@ $ pip install -e .[docs,tests]
 
 ## pre-commit hook
 커밋 전, [PEP8](https://www.python.org/dev/peps/pep-0008/) 확인을 위한 커밋 훅을 설정합니다.
-PEP8에 명시된, 파이썬 코드 스타일을 따르도록 합니다.
+PEP8에 명시된, 파이썬 코드 스타일을 따르도록 합니다. 그리고 less 파일을 수정한 경우에도 자동으로
+변경사항을 반영할 수 있도록 합니다.
 
+프로젝트 루트에서 다음을 수행하세요.
 ```console
-$ cp hooks/pre-commit .git/hooks/
+$ ln -s $(pwd)/hooks/pre-commit .git/hooks/
 $ pip install flake8
 ```
 
