@@ -5,8 +5,8 @@ import subprocess
 
 from click import argument, group, option, Path
 
-from .app import app, initialize_app
-from .config import read_config
+from alps.app import app, initialize_app
+from alps.config import read_config
 
 __all__ = 'main',
 
