@@ -4,6 +4,9 @@ from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 
 from alps.db import Base
+from alps.model import import_all_modules
+
+import_all_modules()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
