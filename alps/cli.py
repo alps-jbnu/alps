@@ -30,8 +30,8 @@ def runserver(debug, port, config):
 
 
 @main.command()
-@argument('config', nargs=1, type=Path(exists=True))
-@argument('alembic-command', nargs=-1)
+@argument('config', type=Path(exists=True))
+@argument('alembic-command')
 def migration(config, alembic_command):
     """Run Alembic command with sqlalchemy_url in configuration file,
     not depending on the sqlalchemy_url in alembic.ini file
@@ -40,7 +40,8 @@ def migration(config, alembic_command):
 
     .. code-block:: console
 
-        $ alps migration example.cfg.yml alembic current
+        $ alps migration example.cfg.yml "alembic revision \
+          --autogenerate -m 'Added account table'"
     """
 
     # Load configuration file and alembic.ini
@@ -71,7 +72,7 @@ def migration(config, alembic_command):
         config_parser.write(alembic_config_file)
 
     # Call Alembic command
-    subprocess.call(alembic_command)
+    subprocess.call(alembic_command, shell=True)
 
     # Restore alembic.ini and change working directory to initial directory
     os.rename(ini_backup_path, ini_path)
