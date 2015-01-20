@@ -42,6 +42,7 @@ def migration(config, alembic_command):
 
         $ alps migration example.cfg.yml "alembic revision \
           --autogenerate -m 'Added account table'"
+        $ alps migration example.cfg.yml "alembic upgrade head"
     """
 
     # Load configuration file and alembic.ini
