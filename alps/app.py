@@ -3,6 +3,7 @@ import os
 import pathlib
 
 from flask import Flask, render_template
+from flask.ext.login import LoginManager
 
 from alps.config import read_config
 from alps.db import setup_session
@@ -11,7 +12,10 @@ from alps.db import setup_session
 __all__ = 'app', 'initialize_app'
 
 app = Flask(__name__, template_folder='templates')
+login_manager = LoginManager()
+
 setup_session(app)
+login_manager.init_app(app)
 
 
 def initialize_app(app=None, config_dict=None):
