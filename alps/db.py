@@ -17,11 +17,11 @@ def get_engine(database_url):
 
     config = current_app.config
     try:
-        return config['database_engine']
+        return config['DATABASE_ENGINE']
     except KeyError:
-        db_url = config['database_url']
+        db_url = config['DATABASE_URL']
         engine = create_engine(db_url)
-        config['database_engine'] = engine
+        config['DATABASE_ENGINE'] = engine
         return engine
 
 

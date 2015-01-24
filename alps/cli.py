@@ -51,8 +51,8 @@ def migration(config, alembic_command):
         return
 
     config_dict = read_config(pathlib.Path(config))
-    if not config_dict.get('database_url'):
-        print('Require database_url in config')
+    if not config_dict.get('DATABASE_URL'):
+        print('Require DATABASE_URL in config')
         return
 
     config_parser = configparser.ConfigParser()
@@ -69,7 +69,7 @@ def migration(config, alembic_command):
     os.rename(ini_path, ini_backup_path)
     with open(ini_path, 'w') as alembic_config_file:
         config_parser['alembic']['sqlalchemy.url'] = \
-            config_dict['database_url']
+            config_dict['DATABASE_URL']
         config_parser.write(alembic_config_file)
 
     # Call Alembic command
