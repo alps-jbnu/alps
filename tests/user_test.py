@@ -1,6 +1,7 @@
+from alps.user import User
 
 
 def test_users_are_created(fx_session, fx_users):
-    assert fx_users.user_1.name == '철수'
-    assert fx_users.user_2.name == '영희'
-    assert fx_users.user_3.name == '알프스'
+    assert fx_session.query(User).count() == 3
+    assert fx_session.query(User).filter_by(nickname='알프스').one() == \
+        fx_users.user_3
