@@ -5,13 +5,16 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.local import LocalProxy
 
 
-__all__ = 'get_engine', 'get_session'
+__all__ = 'Base', 'get_engine', 'get_session', 'Session'
 
 Base = declarative_base()
 Session = sessionmaker(autocommit=True)
 
 
-def get_engine():
+def get_engine(database_url):
+    if database_url:
+        return create_engine(database_url)
+
     config = current_app.config
     try:
         return config['database_engine']
@@ -22,7 +25,10 @@ def get_engine():
         return engine
 
 
-def get_session():
+def get_session(engine):
+    if engine:
+        return Session(bind=engine)
+
     if hasattr(g, 'session'):
         return g.session
     session = Session(bind=get_engine())
