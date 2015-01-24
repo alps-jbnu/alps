@@ -18,6 +18,7 @@ install_requires = {
     'click >= 3.3',
     'Flask >= 0.10.1',
     'Flask-Login >= 0.2.11',
+    'Flask-WTF >= 0.11',
     'PyYAML >= 3.11',
     'SQLAlchemy >= 0.9.8',
 }
