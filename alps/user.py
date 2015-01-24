@@ -10,6 +10,7 @@ __all__ = 'User',
 
 class User(Base):
     id = Column(Integer, primary_key=True)
+    username = Column(String, index=True, nullable=False, unique=True)
     name = Column(String, index=True, nullable=False)
     email = Column(String, index=True, nullable=False)
     nickname = Column(String, index=True, nullable=False, unique=True)

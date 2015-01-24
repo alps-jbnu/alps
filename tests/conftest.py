@@ -61,11 +61,11 @@ class FixtureModule(types.ModuleType):
 def fx_users(fx_session):
     f = FixtureModule('fx_users')
 
-    f.user_1 = User(name='장그래', nickname='그래',
+    f.user_1 = User(username='yes', name='장그래', nickname='그래',
                     email='yes@alps.jbnu.ac.kr')
-    f.user_2 = User(name='안영이', nickname='안녕',
+    f.user_2 = User(username='hi', name='안영이', nickname='안녕',
                     email='hi@alps.jbnu.ac.kr')
-    f.user_3 = User(name='알프스', nickname='알프스',
+    f.user_3 = User(username='alps', name='알프스', nickname='알프스',
                     email='alps@alps.jbnu.ac.kr')
 
     with fx_session.begin():
