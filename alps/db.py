@@ -29,6 +29,11 @@ def get_session(engine=None):
     if engine:
         return Session(bind=engine)
 
+    try:
+        return current_app.config['TEST_SESSION']
+    except (RuntimeError, KeyError):
+        pass
+
     if hasattr(g, 'session'):
         return g.session
 

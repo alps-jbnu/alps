@@ -8,7 +8,7 @@ from flask_wtf.csrf import CsrfProtect
 
 from alps.config import read_config
 from alps.db import setup_session
-from alps.forms import SignInForm
+from alps.forms import login_error_msg, SignInForm
 
 
 __all__ = 'app', 'initialize_app'
@@ -54,8 +54,10 @@ def login():
 
     if request.method == 'POST':
         if not form.validate():
-            return render_template('login.html', form=form)
+            return render_template('login.html', form=form,
+                                   err_msg=login_error_msg)
         else:
             return redirect(url_for('index'))
     elif request.method == 'GET':
-        return render_template('login.html', form=form)
+        return render_template('login.html', form=form,
+                               err_msg=login_error_msg)

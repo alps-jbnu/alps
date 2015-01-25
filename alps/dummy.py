@@ -6,10 +6,10 @@ from alps.user import User
 def insert_dummy_data(app):
     import_all_modules()
 
-    user_1 = User(username='yes', name='장그래', nickname='그래',
+    user_1 = User(username='yesman', name='장그래', nickname='그래',
                   email='yes@alps.jbnu.ac.kr')
     user_1.set_password('iamayesman')
-    user_2 = User(username='hi', name='안영이', nickname='안녕',
+    user_2 = User(username='hihi', name='안영이', nickname='안녕',
                   email='hi@alps.jbnu.ac.kr')
     user_2.set_password('hellohello')
     user_3 = User(username='alps', name='알프스', nickname='알프스',
