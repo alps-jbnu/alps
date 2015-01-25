@@ -20,7 +20,7 @@ def _fx_session(engine):
         metadata = Base.metadata
         metadata.drop_all(bind=engine)
         metadata.create_all(bind=engine)
-        session = get_session(engine)
+        session = get_session(engine=engine)
         yield session
         session.rollback()
         metadata.drop_all(bind=engine)
@@ -63,10 +63,13 @@ def fx_users(fx_session):
 
     f.user_1 = User(username='yes', name='장그래', nickname='그래',
                     email='yes@alps.jbnu.ac.kr')
+    f.user_1.set_password('iamayesman')
     f.user_2 = User(username='hi', name='안영이', nickname='안녕',
                     email='hi@alps.jbnu.ac.kr')
+    f.user_2.set_password('hellohello')
     f.user_3 = User(username='alps', name='알프스', nickname='알프스',
                     email='alps@alps.jbnu.ac.kr')
+    f.user_3.set_password('alpspassword')
 
     with fx_session.begin():
         fx_session.add_all([f.user_1, f.user_2, f.user_3])
