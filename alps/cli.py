@@ -33,30 +33,20 @@ def runserver(debug, port, config):
 
 
 @main.command()
-@argument('config', type=Path(exists=True))
+@argument('database-url')
 @argument('alembic-command')
-def migration(config, alembic_command):
-    """Run Alembic command with sqlalchemy_url in configuration file,
+def migration(database_url, alembic_command):
+    """Run Alembic command with database url argument,
     not depending on the sqlalchemy_url in alembic.ini file
 
     Example:
 
     .. code-block:: console
 
-        $ alps migration example.cfg.yml "alembic revision \
+        $ alps migration postgresql:///alps "alembic revision \
           --autogenerate -m 'Added account table'"
-        $ alps migration example.cfg.yml "alembic upgrade head"
+        $ alps migration postgresql:///alps "alembic upgrade head"
     """
-
-    # Load configuration file and alembic.ini
-    if not config:
-        print('Require config filename')
-        return
-
-    config_dict = read_config(pathlib.Path(config))
-    if not config_dict.get('DATABASE_URL'):
-        print('Require DATABASE_URL in config')
-        return
 
     config_parser = configparser.ConfigParser()
     config_parser.read(os.path.join(os.path.dirname(__file__), 'alembic.ini'))
@@ -71,8 +61,7 @@ def migration(config, alembic_command):
     os.chdir(alembic_dir)
     os.rename(ini_path, ini_backup_path)
     with open(ini_path, 'w') as alembic_config_file:
-        config_parser['alembic']['sqlalchemy.url'] = \
-            config_dict['DATABASE_URL']
+        config_parser['alembic']['sqlalchemy.url'] = database_url
         config_parser.write(alembic_config_file)
 
     # Call Alembic command
