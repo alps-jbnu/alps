@@ -5,13 +5,13 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.local import LocalProxy
 
 
-__all__ = 'Base', 'get_engine', 'get_session', 'Session'
+__all__ = 'Base', 'get_engine', 'get_session', 'session'
 
 Base = declarative_base()
 Session = sessionmaker(autocommit=True)
 
 
-def get_engine(database_url):
+def get_engine(database_url=None):
     if database_url:
         return create_engine(database_url)
 
@@ -25,14 +25,16 @@ def get_engine(database_url):
         return engine
 
 
-def get_session(engine):
+def get_session(engine=None):
     if engine:
         return Session(bind=engine)
 
     if hasattr(g, 'session'):
         return g.session
+
     session = Session(bind=get_engine())
     g.session = session
+    return session
 
 
 def close_session(exception=None):
