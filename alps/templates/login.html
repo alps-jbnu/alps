@@ -70,6 +70,9 @@
 
         <!-- Input Fields -->
         {{ form.csrf_token }}
+        {% if next %}
+        <input id="next" type="hidden" name="next" value="{{ next }}"></input>
+        {% endif %}
         {{ render_field(form.username) }}
         {{ render_field(form.password) }}
         <!-- /Input Fields -->

@@ -30,4 +30,17 @@ class User(Base):
     def check_password(self, password):
         return check_password_hash(self.pwhash, password)
 
+    def is_active(self):
+        # TODO: email validation
+        return True
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.username
+
     __tablename__ = 'users'
