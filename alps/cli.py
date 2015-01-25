@@ -85,7 +85,8 @@ def migration(config, alembic_command):
 
 @main.command()
 @option('--config', '-c', type=Path(exists=True))
-def schema(config):
+@option('--database-url', '-d', type=str)
+def schema(config, database_url):
     """Create all of the tables from Metadata.
     If tables exist before run this command, they will be dropped.
     """
@@ -94,9 +95,12 @@ def schema(config):
         config_dict = read_config(pathlib.Path(config))
         initialize_app(app=app, config_dict=config_dict)
 
+    if not database_url:
+        database_url = None
+
     with app.app_context():
         import_all_modules()
-        engine = get_engine()
+        engine = get_engine(database_url=database_url)
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
 
