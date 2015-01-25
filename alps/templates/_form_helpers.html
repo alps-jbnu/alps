@@ -1,0 +1,23 @@
+{% macro render_field(field) %}
+<div class="form-group{% if field.errors %} has-error{% endif %}">
+  <!--<label for="username">Username:</label>-->
+  <div class="input-icon">
+    <i class="icon-user"></i>
+    {% if field.errors %}
+      {% set field_class = 'form-control has-error'%}
+    {% else %}
+      {% set field_class = 'form-control'%}
+    {% endif %}
+
+    {% if field.type == 'TextField' %}
+      {{ field(class=field_class, autofocus='autofocus', placeholder=field.label.text, **kwargs)|safe }}
+    {% elif field.type == 'PasswordField' %}
+      {{ field(class=field_class, autofocus='autofocus', placeholder=field.label.text, **kwargs)|safe }}
+    {% endif %}
+
+    {% for msg in field.errors %}
+      <label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
+    {% endfor %}
+  </div>
+</div>
+{% endmacro %}

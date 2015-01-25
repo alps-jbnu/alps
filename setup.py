@@ -17,7 +17,10 @@ install_requires = {
     'alembic >= 0.7.4',
     'click >= 3.3',
     'Flask >= 0.10.1',
-    'PyYAML>=3.11',
+    'Flask-Login >= 0.2.11',
+    'Flask-WTF >= 0.11',
+    'lxml >= 3.4.1',
+    'PyYAML >= 3.11',
     'SQLAlchemy >= 0.9.8',
 }
 

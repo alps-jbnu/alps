@@ -5,34 +5,41 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.local import LocalProxy
 
 
-__all__ = 'Base', 'get_engine', 'get_session', 'Session'
+__all__ = 'Base', 'get_engine', 'get_session', 'session'
 
 Base = declarative_base()
 Session = sessionmaker(autocommit=True)
 
 
-def get_engine(database_url):
+def get_engine(database_url=None):
     if database_url:
         return create_engine(database_url)
 
     config = current_app.config
     try:
-        return config['database_engine']
+        return config['DATABASE_ENGINE']
     except KeyError:
-        db_url = config['database_url']
+        db_url = config['DATABASE_URL']
         engine = create_engine(db_url)
-        config['database_engine'] = engine
+        config['DATABASE_ENGINE'] = engine
         return engine
 
 
-def get_session(engine):
+def get_session(engine=None):
     if engine:
         return Session(bind=engine)
 
+    try:
+        return current_app.config['TEST_SESSION']
+    except (RuntimeError, KeyError):
+        pass
+
     if hasattr(g, 'session'):
         return g.session
+
     session = Session(bind=get_engine())
     g.session = session
+    return session
 
 
 def close_session(exception=None):
