@@ -19,6 +19,7 @@ install_requires = {
     'Flask >= 0.10.1',
     'Flask-Login >= 0.2.11',
     'Flask-WTF >= 0.11',
+    'lxml >= 3.4.1',
     'PyYAML >= 3.11',
     'SQLAlchemy >= 0.9.8',
 }
