@@ -295,37 +295,6 @@ var App = function() {
 
 			e.preventDefault();
 		});
-
-		var _handleResizeable = function() {
-			$('#divider.resizeable').mousedown(function(e){
-				e.preventDefault();
-
-				var divider_width = $('#divider').width();
-				$(document).mousemove(function(e){
-					var sidebar_width = e.pageX+divider_width;
-					if (sidebar_width <= 300 && sidebar_width >= (divider_width * 2 - 3)) {
-						if (sidebar_width >= 240 && sidebar_width <= 260) {
-							$('#sidebar').css("width", 250);
-							$('#sidebar-content').css("width", 250);
-							$('#content').css("margin-left", 250);
-							$('#divider').css("margin-left", 250);
-						} else {
-							$('#sidebar').css("width",sidebar_width);
-							$('#sidebar-content').css("width", sidebar_width);
-							$('#content').css("margin-left",sidebar_width);
-							$('#divider').css("margin-left",sidebar_width);
-						}
-
-					}
-
-				})
-			});
-			$(document).mouseup(function(e){
-				$(document).unbind('mousemove');
-			});
-		}
-
-		_handleResizeable();
 	}
 
 	/**
@@ -371,76 +340,6 @@ var App = function() {
 						'height': '100%',
 						wheelStep: wheelStepInt
 					});
-				}
-			}
-		}
-	}
-
-	var handleThemeSwitcher = function() {
-		// Add/ Removes theme-* to/ from body
-		function _changeTheme(theme) {
-			// Remove theme-*
-			$('body').removeClass(function (index, css) {
-				return (css.match (/\btheme-\S+/g) || []).join(' ');
-			});
-
-			// Select theme
-			$('body').addClass('theme-' + theme);
-
-			// Store it for page refresh
-			$.cookie('theme', theme, { path: '/' });
-
-			// Button styles
-			if (theme == 'dark') {
-				_toggleBtnInverse('add');
-			} else {
-				_toggleBtnInverse('remove');
-			}
-		}
-
-		// Add/ Removes .btn-inverse to/ from switcher
-		function _toggleBtnInverse(state) {
-			$('#theme-switcher .btn').each(function() {
-				if (state == 'add') {
-					$(this).addClass('btn-inverse');
-				} else {
-					$(this).removeClass('btn-inverse');
-				}
-			});
-		}
-
-		if ($.cookie) {
-			// Handles click-event on switcher
-			$('#theme-switcher label').click(function() {
-				var self = $(this).find('input');
-				var theme = self.data('theme');
-
-				_changeTheme(theme);
-			});
-
-			// Checks, if cookie exists
-			// (If user actually changed the theme via switcher)
-			if ($.cookie('theme')) {
-				var cookie_theme = $.cookie('theme');
-				_changeTheme(cookie_theme);
-
-				// To select the right switch
-				$('#theme-switcher input').each(function() {
-					var self = $(this);
-					var theme = self.data('theme');
-
-					if (theme == cookie_theme) {
-						self.parent().addClass('active');
-					} else {
-						self.parent().removeClass('active');
-					}
-				});
-
-				// Button styles
-				if (cookie_theme == 'dark') {
-					_toggleBtnInverse('add');
-				} else {
-					_toggleBtnInverse('remove');
 				}
 			}
 		}
@@ -680,7 +579,6 @@ var App = function() {
 			handleSwipeEvents(); // Enables feature to swipe to the left or right on mobile phones to open the sidebar
 			handleSidebarMenu(); // Handles navigation
 			handleScrollbars(); // Adds styled scrollbars for sidebar on desktops
-			handleThemeSwitcher(); // Bright/ Dark Switcher
 			handleWidgets(); // Handle collapse and expand from widgets
 			handleCheckableTables(); // Checks all checkboxes in a table if master checkbox was toggled
 			handleTabs(); // Fixes tab height

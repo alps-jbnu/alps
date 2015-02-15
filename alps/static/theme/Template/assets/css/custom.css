@@ -1,0 +1,52 @@
+@media (min-width: 768px) {
+	body {
+		background-color: #ececec;
+	}
+}
+
+@media (min-width: 1000px) {
+	#container {
+		width: 970px;
+		margin-left: auto;
+		margin-right: auto;
+		border-left: 1px solid #d1d1d1;
+		border-right: 1px solid #d1d1d1;
+	}
+}
+
+.reference-sites {
+	margin: 0px;
+	padding: 0px;
+	list-style: outside none none;
+}
+
+.reference-sites li {
+	padding: 0px;
+	border-bottom: 1px solid #EBEBEB;
+}
+
+.reference-sites li a {
+	display: block;
+	margin: 0px;
+	padding: 15px;
+	color: #555;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #FFF;
+	font-size: 13px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.reference-sites li a:hover {
+  background: #fdfdfd;
+}
+
+.reference-sites li a:active {
+  background: #ebebeb;
+}
+
+.empty-page-header {
+	border: 0px none;
+	margin: 0px;
+	padding-bottom: 20px;
+}
