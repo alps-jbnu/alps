@@ -12,20 +12,38 @@
 		border-left: 1px solid #d1d1d1;
 		border-right: 1px solid #d1d1d1;
 	}
+
+	.header {
+		width: 970px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
-.reference-sites {
-	margin: 0px;
+.navbar > .container {
+	padding-right: 0px;
+}
+
+.navbar .nav > li:last-child {
+	border-right: 0px;
+}
+
+.sidebar-content {
+	margin: 0px 0px 15px 0px;
 	padding: 0px;
 	list-style: outside none none;
 }
 
-.reference-sites li {
+.sidebar-content li {
 	padding: 0px;
 	border-bottom: 1px solid #EBEBEB;
 }
 
-.reference-sites li a {
+.sidebar-content li:last-child {
+	border-bottom-style: none;
+}
+
+.sidebar-content li a {
 	display: block;
 	margin: 0px;
 	padding: 15px;
@@ -34,14 +52,13 @@
 	text-shadow: 0px 1px 0px #FFF;
 	font-size: 13px;
 	font-weight: 600;
-	text-transform: uppercase;
 }
 
-.reference-sites li a:hover {
+.sidebar-content li a:hover {
   background: #fdfdfd;
 }
 
-.reference-sites li a:active {
+.sidebar-content li a:active {
   background: #ebebeb;
 }
 

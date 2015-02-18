@@ -110,7 +110,7 @@
 <body>
 
 	<!-- Header -->
-	<header class="header navbar navbar-fixed-top" role="banner">
+	<header class="header navbar" role="banner">
 		<!-- Top Navigation Bar -->
 		<div class="container">
 
@@ -179,117 +179,40 @@
 						</li>
 					</ul>
 				</li>
-
-				<!-- Project Switcher Button -->
-				<li class="dropdown">
-					<a href="{{ url_for('static', filename='theme/Template/#') }}" class="project-switcher-btn dropdown-toggle">
-						<i class="icon-beaker"></i>
-						<span>온라인 저지</span>
-					</a>
-				</li>
-
-				<!-- User Login Dropdown -->
-				<li class="dropdown user">
-					<a href="{{ url_for('static', filename='theme/Template/#') }}" class="dropdown-toggle" data-toggle="dropdown">
-						<!--<img alt="" src="{{ url_for('static', filename='theme/Template/assets/img/avatar1_small.jpg') }}" />-->
-						<i class="icon-male"></i>
-						<span class="username">John Doe</span>
-						<i class="icon-caret-down small"></i>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="{{ url_for('static', filename='theme/Template/pages_user_profile.html') }}"><i class="icon-user"></i> My Profile</a></li>
-						<li><a href="{{ url_for('static', filename='theme/Template/pages_calendar.html') }}"><i class="icon-calendar"></i> My Calendar</a></li>
-						<li><a href="{{ url_for('static', filename='theme/Template/#') }}"><i class="icon-tasks"></i> My Tasks</a></li>
-						<li class="divider"></li>
-						<li><a href="{{ url_for('static', filename='theme/Template/login.html') }}"><i class="icon-key"></i> Log Out</a></li>
-					</ul>
-				</li>
-				<!-- /user login dropdown -->
+				
+				{% if current_user.is_authenticated() %}
+					<!-- User Login Dropdown -->
+					<li class="dropdown user">
+						<a href="{{ url_for('static', filename='theme/Template/#') }}" class="dropdown-toggle" data-toggle="dropdown">
+							<!--<img alt="" src="{{ url_for('static', filename='theme/Template/assets/img/avatar1_small.jpg') }}" />-->
+							<i class="icon-male"></i>
+							<span class="username">{{ current_user.nickname }}</span>
+							<i class="icon-caret-down small"></i>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ url_for('static', filename='theme/Template/pages_user_profile.html') }}"><i class="icon-user"></i> My Profile</a></li>
+							<li><a href="{{ url_for('static', filename='theme/Template/pages_calendar.html') }}"><i class="icon-calendar"></i> My Calendar</a></li>
+							<li><a href="{{ url_for('static', filename='theme/Template/#') }}"><i class="icon-tasks"></i> My Tasks</a></li>
+							<li class="divider"></li>
+							<li><a href="{{ url_for('static', filename='theme/Template/login.html') }}"><i class="icon-key"></i> 로그아웃</a></li>
+						</ul>
+					</li>
+					<!-- /user login dropdown -->
+				{% else %}
+					<!-- User Login Dropdown -->
+					<li class="dropdown user">
+						<a href="{{ url_for('login', next=request.path) }}">
+							<!--<img alt="" src="{{ url_for('static', filename='theme/Template/assets/img/avatar1_small.jpg') }}" />-->
+							<i class="icon-signin"></i>
+							<span>로그인</span>
+						</a>
+					</li>
+					<!-- /user login dropdown -->
+				{% endif %}
 			</ul>
 			<!-- /Top Right Menu -->
 		</div>
 		<!-- /top navigation bar -->
-
-		<!--=== Project Switcher ===-->
-		<div id="project-switcher" class="container project-switcher">
-			<div id="scrollbar">
-				<div class="handle"></div>
-			</div>
-
-			<div id="frame">
-				<ul class="project-list">
-					<li>
-						<a href="">
-							<span class="image"><img src="https://algospot.com/static/images/logo.png"></img></span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<span class="image"><img src="https://www.acmicpc.net/images/logo.png"></img></span>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<span class="image"><img src="http://uva.onlinejudge.org/templates/hm_yaml_2_5/img/onlinejudgelogo2.png"></img></span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-thumbs-up"></i></span>
-							<span class="title">Sed diam nonumy</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-female"></i></span>
-							<span class="title">At vero eos et</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-beaker"></i></span>
-							<span class="title">Sed diam voluptua</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-desktop"></i></span>
-							<span class="title">Lorem ipsum dolor</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-compass"></i></span>
-							<span class="title">Dolor sit invidunt</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-male"></i></span>
-							<span class="title">Consetetur sadipscing elitr</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-thumbs-up"></i></span>
-							<span class="title">Sed diam nonumy</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-female"></i></span>
-							<span class="title">At vero eos et</span>
-						</a>
-					</li>
-					<li>
-						<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-							<span class="image"><i class="icon-beaker"></i></span>
-							<span class="title">Sed diam voluptua</span>
-						</a>
-					</li>
-				</ul>
-			</div> <!-- /#frame -->
-		</div> <!-- /#project-switcher -->
 	</header> <!-- /.header -->
 
 	<div id="container">
@@ -341,7 +264,7 @@
 					<span>관련 사이트</span>
 				</div>
 
-				<ul class="reference-sites">
+				<ul class="sidebar-content">
 					<li>
 						<a target="_blank" href="http://cse.jbnu.ac.kr">전북대학교 컴퓨터공학부</a>
 					</li>
@@ -349,6 +272,23 @@
 						<a target="_blank" href="http://litmus.jbnu.ac.kr">리트머스 온라인 저지</a>
 					</li>
 				</ul>
+
+				<div class="sidebar-title">
+					<span>온라인 저지</span>
+				</div>
+
+				<ul class="sidebar-content">
+					<li>
+						<a target="_blank" href="http://cse.jbnu.ac.kr">알고스팟</a>
+					</li>
+					<li>
+						<a target="_blank" href="http://litmus.jbnu.ac.kr">백준 온라인 저지</a>
+					</li>
+					<li>
+						<a target="_blank" href="http://litmus.jbnu.ac.kr">UVa 온라인 저지</a>
+					</li>
+				</ul>
+
 
 
 			</div>
@@ -380,20 +320,14 @@
 								</div>
 							</div>
 							<div class="widget-content">
-								<div class="row">
-									<div class="col-md-4">
-										<img src="{{ url_for('static', filename='img/alps.png') }}" width="199" height="199"></img>
-									</div>
-									<div class="col-md-8">
-										<h2>최신 공지글입니다.</h2>
-										<p>
-											안녕하세요. 새로운 홈페이지를 만들고 있습니다. 아직 개발 중이오니 이용에 불편이 있더라도 양해해 주시기 바랍니다.
-										</p>
-										<p>일정: 2015년 2월 00일</p>
-										<p>장소: 공과대학 7호관 7007호</p>
-										<p>내용: 내용입니다.</p>
-									</div>
-								</div>
+								<h2 style="margin-top: 10px; padding-bottom: 10px; border-bottom: 2px solid #ececec">최신 공지글입니다.</h2>
+								<h3>얍얍</h3>
+								<p>
+									안녕하세요. 전북대학교 컴퓨터공학부 알고리즘 및 프로그래밍 스터디 동아리입니다. 이것은 테스트 목적으로 쓰여진 공지사항 내용입니다.
+								</p>
+								<p>일정: 2015년 2월 00일</p>
+								<p>장소: 공과대학 7호관 7007호</p>
+								<p>내용: 내용입니다.</p>
 							</div>
 						</div>
 					</div>
@@ -413,45 +347,51 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="widget-content">
 								<table class="table table-hover">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>First Name</th>
-											<th>Last Name</th>
-											<th class="hidden-xs">Username</th>
-											<th>Status</th>
+											<th>번호</th>
+											<th>ID</th>
+											<th>제목</th>
+											<th>저지</th>
+											<th>제출자</th>
+											<th>판정</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td>1</td>
-											<td>Joey</td>
-											<td>Greyson</td>
-											<td class="hidden-xs">joey123</td>
-											<td><span class="label label-success">Approved</span></td>
+											<td>JOSEPHUS</td>
+											<td>조세푸스</td>
+											<td>Algospot</td>
+											<td>홍길동</td>
+											<td><span class="label label-success">Accepted</span></td>
 										</tr>
 										<tr>
 											<td>2</td>
-											<td>Wolf</td>
-											<td>Bud</td>
-											<td class="hidden-xs">wolfy</td>
-											<td><span class="label label-info">Pending</span></td>
+											<td>10500</td>
+											<td>Some problem title</td>
+											<td>UVa</td>
+											<td>장그래</td>
+											<td><span class="label label-info">Not Judged</span></td>
 										</tr>
 										<tr>
 											<td>3</td>
-											<td>Darin</td>
-											<td>Alec</td>
-											<td class="hidden-xs">alec82</td>
-											<td><span class="label label-warning">Suspended</span></td>
+											<td>1234</td>
+											<td>어떤 문제</td>
+											<td>Baekjoon</td>
+											<td>철수</td>
+											<td><span class="label label-warning">Compile Error</span></td>
 										</tr>
 										<tr>
 											<td>4</td>
-											<td>Andrea</td>
-											<td>Brenden</td>
-											<td class="hidden-xs">andry</td>
-											<td><span class="label label-danger">Blocked</span></td>
+											<td>4000</td>
+											<td>또 다른 문제</td>
+											<td>Baekjoon</td>
+											<td>영희</td>
+											<td><span class="label label-danger">Wrong Answer</span></td>
 										</tr>
 									</tbody>
 								</table>
@@ -466,402 +406,249 @@
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
-								<h4><i class="icon-reorder"></i> Feeds</h4>
+								<h4><i class="icon-rss"></i> 뉴스 피드</h4>
 								<div class="toolbar no-padding">
 									<div class="btn-group">
 										<span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span>
-										<span class="btn btn-xs widget-refresh"><i class="icon-refresh"></i></span>
 									</div>
 								</div>
 							</div>
 							<div class="widget-content">
-								<div class="tabbable tabbable-custom">
-									<ul class="nav nav-tabs">
-										<li class="active"><a href="{{ url_for('static', filename='theme/Template/#tab_feed_1') }}" data-toggle="tab">System</a></li>
-										<li><a href="{{ url_for('static', filename='theme/Template/#tab_feed_2') }}" data-toggle="tab">Activities</a></li>
-									</ul>
-									<div class="tab-content">
-										<div class="tab-pane active" id="tab_feed_1">
-											<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible="0">
-												<ul class="feeds clearfix">
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success">
-																		<i class="icon-bell"></i>
-																	</div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">You have 2 puzzles to solve.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">
-																Just now
-															</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">20 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li class="hoverable">
-														<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-															<div class="col1">
-																<div class="content">
-																	<div class="content-col1">
-																		<div class="label label-info"><i class="icon-bullhorn"></i></div>
-																	</div>
-																	<div class="content-col2">
-																		<div class="desc">New items are in queue.</div>
-																	</div>
-																</div>
-															</div> <!-- /.col1 -->
-															<div class="col2">
-																<div class="date">25 mins ago</div>
-															</div> <!-- /.col2 -->
-														</a>
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-danger"><i class="icon-warning-sign"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">High CPU load on cluster #2. <span class="label label-danger label-mini">Fix it <i class="icon-share-alt"></i></span></div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">30 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-warning"><i class="icon-bolt"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Disk space to 85% full.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">45 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1 hour ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-default"><i class="icon-time"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Time successfully synced.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1.5 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-bullhorn"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Download finished.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1.8 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">2 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-bullhorn"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Download finished.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">3 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">5 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-bullhorn"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Download finished.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">5.5 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">7 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-bullhorn"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">Download finished.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">16 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">20 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-												</ul> <!-- /.feeds -->
-											</div> <!-- /.scroller -->
-										</div> <!-- /#tab_feed_1 -->
-
-										<div class="tab-pane" id="tab_feed_2">
-											<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible="0">
-												<ul class="feeds clearfix">
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1 min ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">5 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">10 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">20 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">30 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">40 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">50 mins ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-success"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New user registered.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1 hour ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-													<li>
-														<div class="col1">
-															<div class="content">
-																<div class="content-col1">
-																	<div class="label label-info"><i class="icon-plus"></i></div>
-																</div>
-																<div class="content-col2">
-																	<div class="desc">New order received.</div>
-																</div>
-															</div>
-														</div> <!-- /.col1 -->
-														<div class="col2">
-															<div class="date">1.5 hours ago</div>
-														</div> <!-- /.col2 -->
-													</li>
-												</ul> <!-- /.feeds -->
-											</div> <!-- /.scroller -->
-										</div> <!-- /#tab_feed_1 -->
-									</div> <!-- /.tab-content -->
-								</div> <!-- /.tabbable tabbable-custom-->
+								<div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible="0">
+									<ul class="feeds clearfix">
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success">
+															<i class="icon-bell"></i>
+														</div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">You have 2 puzzles to solve.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">
+													Just now
+												</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New user registered.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">20 mins ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li class="hoverable">
+											<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+												<div class="col1">
+													<div class="content">
+														<div class="content-col1">
+															<div class="label label-info"><i class="icon-bullhorn"></i></div>
+														</div>
+														<div class="content-col2">
+															<div class="desc">New items are in queue.</div>
+														</div>
+													</div>
+												</div> <!-- /.col1 -->
+												<div class="col2">
+													<div class="date">25 mins ago</div>
+												</div> <!-- /.col2 -->
+											</a>
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-danger"><i class="icon-warning-sign"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">High CPU load on cluster #2. <span class="label label-danger label-mini">Fix it <i class="icon-share-alt"></i></span></div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">30 mins ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-warning"><i class="icon-bolt"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Disk space to 85% full.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">45 mins ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New user registered.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">1 hour ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-default"><i class="icon-time"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Time successfully synced.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">1.5 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-info"><i class="icon-bullhorn"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Download finished.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">1.8 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New order received.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">2 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-info"><i class="icon-bullhorn"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Download finished.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">3 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New order received.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">5 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-info"><i class="icon-bullhorn"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Download finished.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">5.5 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New order received.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">7 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-info"><i class="icon-bullhorn"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">Download finished.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">16 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+										<li>
+											<div class="col1">
+												<div class="content">
+													<div class="content-col1">
+														<div class="label label-success"><i class="icon-plus"></i></div>
+													</div>
+													<div class="content-col2">
+														<div class="desc">New order received.</div>
+													</div>
+												</div>
+											</div> <!-- /.col1 -->
+											<div class="col2">
+												<div class="date">20 hours ago</div>
+											</div> <!-- /.col2 -->
+										</li>
+									</ul> <!-- /.feeds -->
+								</div> <!-- /.scroller -->
 							</div> <!-- /.widget-content -->
 						</div> <!-- /.widget .box -->
 					</div> <!-- /.col-md-6 -->
@@ -873,7 +660,7 @@
 					<div class="col-md-12">
 						<div class="widget">
 							<div class="widget-header">
-									<h4><i class="icon-calendar"></i> Calendar</h4>
+									<h4><i class="icon-calendar"></i> 일정</h4>
 								</div>
 							<div class="widget-content">
 								<div id="calendar"></div>
