@@ -81,9 +81,3 @@ def login():
 def logout():
     logout_user()
     return redirect(request.args.get('next') or url_for('index'))
-
-
-@app.route('/secret')
-@login_required
-def secret_page():
-    return 'Welcome to my secret page. This is for test.'
