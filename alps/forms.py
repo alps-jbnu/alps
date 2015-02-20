@@ -57,3 +57,7 @@ class SignInForm(Form):
             return False
 
         return True
+
+
+class SignUpForm(Form):
+    pass

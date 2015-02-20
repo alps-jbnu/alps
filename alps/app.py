@@ -9,7 +9,7 @@ from flask_wtf.csrf import CsrfProtect
 
 from alps.config import read_config
 from alps.db import session, setup_session
-from alps.forms import login_error_msg, SignInForm
+from alps.forms import login_error_msg, SignInForm, SignUpForm
 from alps.model import import_all_modules
 from alps.user import User
 
@@ -74,6 +74,14 @@ def login():
         return render_template('login.html', form=form,
                                err_msg=login_error_msg,
                                next=request.args.get('next'))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = SignUpForm()
+
+    if request.method == 'GET':
+        return render_template('register.html', form=form)
 
 
 @app.route('/logout')
