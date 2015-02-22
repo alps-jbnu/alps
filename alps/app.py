@@ -5,6 +5,7 @@ import pathlib
 from flask import Flask, redirect, render_template, request, url_for
 from flask.ext.login import (LoginManager, login_required, login_user,
                              logout_user)
+from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
 
 from alps.config import read_config
@@ -19,13 +20,15 @@ __all__ = 'app', 'initialize_app', 'login_manager'
 import_all_modules()
 
 app = Flask(__name__, template_folder='templates')
+setup_session(app)
 login_manager = LoginManager()
 csrf_protect = CsrfProtect()
+mail = Mail()
 
-setup_session(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 csrf_protect.init_app(app)
+mail.init_app(app)
 
 # import logging, sys
 # logging.basicConfig(stream=sys.stderr)
@@ -82,6 +85,16 @@ def register():
 
     if request.method == 'GET':
         return render_template('register.html', form=form)
+
+
+@app.route('/test_mail')
+def test_mail():
+    msg = Message('Hello',
+                  body='Hello, World!',
+                  recipients=["test@example.com"])
+    msg.sender = app.config['DEFAULT_MAIL_SENDER']
+    mail.send(msg)
+    return redirect(url_for('index'))
 
 
 @app.route('/logout')
