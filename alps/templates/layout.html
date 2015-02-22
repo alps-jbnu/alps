@@ -131,63 +131,62 @@
 
 			<!-- Top Right Menu -->
 			<ul class="nav navbar-nav navbar-right">
-
-				<!-- Notifications -->
-				<li class="dropdown">
-					<a href="{{ url_for('static', filename='theme/Template/#') }}" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-warning-sign"></i>
-						<span class="badge">5</span>
-					</a>
-					<ul class="dropdown-menu extended notification">
-						<li class="title">
-							<p>You have 5 new notifications</p>
-						</li>
-						<li>
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-								<span class="label label-success"><i class="icon-plus"></i></span>
-								<span class="message">New user registration.</span>
-								<span class="time">1 mins</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-								<span class="label label-danger"><i class="icon-warning-sign"></i></span>
-								<span class="message">High CPU load on cluster #2.</span>
-								<span class="time">5 mins</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-								<span class="label label-success"><i class="icon-plus"></i></span>
-								<span class="message">New user registration.</span>
-								<span class="time">10 mins</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-								<span class="label label-info"><i class="icon-bullhorn"></i></span>
-								<span class="message">New items are in queue.</span>
-								<span class="time">25 mins</span>
-							</a>
-						</li>
-						<li>
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
-								<span class="label label-warning"><i class="icon-bolt"></i></span>
-								<span class="message">Disk space to 85% full.</span>
-								<span class="time">55 mins</span>
-							</a>
-						</li>
-						<li class="footer">
-							<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">View all notifications</a>
-						</li>
-					</ul>
-				</li>
 				
 				{% if current_user.is_authenticated() %}
-					<!-- User Login Dropdown -->
+					<!-- Notifications -->
+					<li class="dropdown">
+						<a href="{{ url_for('static', filename='theme/Template/#') }}" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-warning-sign"></i>
+							<span class="badge">5</span>
+						</a>
+						<ul class="dropdown-menu extended notification">
+							<li class="title">
+								<p>You have 5 new notifications</p>
+							</li>
+							<li>
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+									<span class="label label-success"><i class="icon-plus"></i></span>
+									<span class="message">New user registration.</span>
+									<span class="time">1 mins</span>
+								</a>
+							</li>
+							<li>
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+									<span class="label label-danger"><i class="icon-warning-sign"></i></span>
+									<span class="message">High CPU load on cluster #2.</span>
+									<span class="time">5 mins</span>
+								</a>
+							</li>
+							<li>
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+									<span class="label label-success"><i class="icon-plus"></i></span>
+									<span class="message">New user registration.</span>
+									<span class="time">10 mins</span>
+								</a>
+							</li>
+							<li>
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+									<span class="label label-info"><i class="icon-bullhorn"></i></span>
+									<span class="message">New items are in queue.</span>
+									<span class="time">25 mins</span>
+								</a>
+							</li>
+							<li>
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">
+									<span class="label label-warning"><i class="icon-bolt"></i></span>
+									<span class="message">Disk space to 85% full.</span>
+									<span class="time">55 mins</span>
+								</a>
+							</li>
+							<li class="footer">
+								<a href="{{ url_for('static', filename='theme/Template/javascript:void(0);') }}">View all notifications</a>
+							</li>
+						</ul>
+					</li>
+					<!-- /Notifications -->
+
 					<li class="dropdown user">
 						<a href="{{ url_for('static', filename='theme/Template/#') }}" class="dropdown-toggle" data-toggle="dropdown">
-							<!--<img alt="" src="{{ url_for('static', filename='theme/Template/assets/img/avatar1_small.jpg') }}" />-->
 							<i class="icon-male"></i>
 							<span class="username">{{ current_user.nickname }}</span>
 							<i class="icon-caret-down small"></i>
@@ -198,17 +197,20 @@
 							<li><a href="{{ url_for('logout') }}"><i class="icon-key"></i> 로그아웃</a></li>
 						</ul>
 					</li>
-					<!-- /user login dropdown -->
 				{% else %}
-					<!-- User Login Dropdown -->
 					<li class="dropdown user">
 						<a href="{{ url_for('login', next=request.path) }}">
-							<!--<img alt="" src="{{ url_for('static', filename='theme/Template/assets/img/avatar1_small.jpg') }}" />-->
 							<i class="icon-signin"></i>
 							<span>로그인</span>
 						</a>
 					</li>
-					<!-- /user login dropdown -->
+
+					<li class="dropdown user">
+						<a href="{{ url_for('register') }}">
+							<i class="icon-pencil"></i>
+							<span>회원가입</span>
+						</a>
+					</li>
 				{% endif %}
 			</ul>
 			<!-- /Top Right Menu -->
