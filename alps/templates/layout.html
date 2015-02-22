@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<title>{% block title %}ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹{% endblock %}</title>
 
 	<!--=== CSS ===-->
 
@@ -52,61 +53,60 @@
 
 	<!-- General -->
 	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/libs/breakpoints.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/respond/respond.min.js') }}"></script> <!-- Polyfill for min/max-width CSS3 Media Queries (only for IE8) -->
+	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/respond/respond.min.js') }}"></script>
+	<!-- Polyfill for min/max-width CSS3 Media Queries (only for IE8) -->
 	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/cookie/jquery.cookie.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/slimscroll/jquery.slimscroll.horizontal.min.js') }}"></script>
 
-	<!-- Page specific plugins -->
-	<!-- Charts -->
-	<!--[if lt IE 9]>
-		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/excanvas.min.js') }}"></script>
-	<![endif]-->
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.resize.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.time.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.growraf.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js') }}"></script>
+	{% block head %}
+		<!-- Page specific plugins -->
+		<!-- Charts -->
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/excanvas.min.js') }}"></script>
+		<![endif]-->
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.resize.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.time.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/flot/jquery.flot.growraf.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js') }}"></script>
 
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/daterangepicker/moment.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/daterangepicker/daterangepicker.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/blockui/jquery.blockUI.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/daterangepicker/moment.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/daterangepicker/daterangepicker.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/blockui/jquery.blockUI.min.js') }}"></script>
 
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 
-	<!-- Noty -->
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/jquery.noty.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/layouts/top.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/themes/default.js') }}"></script>
+		<!-- Noty -->
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/jquery.noty.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/layouts/top.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/noty/themes/default.js') }}"></script>
 
-	<!-- Forms -->
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/uniform/jquery.uniform.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/select2/select2.min.js') }}"></script>
+		<!-- Forms -->
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/uniform/jquery.uniform.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/plugins/select2/select2.min.js') }}"></script>
 
-	<!-- App -->
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/app.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/plugins.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/plugins.form-components.js') }}"></script>
+		<!-- App -->
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/app.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/plugins.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/plugins.form-components.js') }}"></script>
 
-	<script>
-	$(document).ready(function(){
-		"use strict";
+		<script>
+		$(document).ready(function(){
+			"use strict";
 
-		App.init(); // Init layout and core plugins
-		Plugins.init(); // Init all plugins
-		FormComponents.init(); // Init all form-specific plugins
-	});
-	</script>
+			App.init(); // Init layout and core plugins
+			Plugins.init(); // Init all plugins
+			FormComponents.init(); // Init all form-specific plugins
+		});
+		</script>
 
-	<!-- Demo JS -->
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/pages_calendar.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_filled_blue.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_simple.js') }}"></script>
-
-	{% block header %}
-		<title>ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹</title>
+		<!-- Demo JS -->
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/pages_calendar.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_filled_blue.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_simple.js') }}"></script>
 	{% endblock %}
 </head>
 
