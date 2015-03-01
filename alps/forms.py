@@ -27,10 +27,10 @@ password_length_validator = Length(min=8, max=50,
 
 
 class SignInForm(Form):
-    username = TextField('아이디',
-                         [no_space_validator, id_length_validator])
-    password = PasswordField('패스워드',
-                             [password_length_validator])
+    username = TextField(label='아이디',
+                         validator=[no_space_validator, id_length_validator])
+    password = PasswordField(label='패스워드',
+                             validator=[password_length_validator])
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -62,15 +62,15 @@ class SignInForm(Form):
 class SignUpForm(Form):
     # TODO: more arguments required in the below fields!
 
-    username = TextField('아이디')
-    nickname = TextField('닉네임')
-    email = TextField('이메일')
-    password = PasswordField('패스워드')
-    confirm_password = PasswordField('패스워드 재확인')
-    name = TextField('이름')
-    jbnu_student = BooleanField('전북대학교 학생입니까?')
-    student_number = TextField('학번')
-    department = TextField('학부(과)')
+    username = TextField(label='아이디')
+    nickname = TextField(label='닉네임')
+    email = TextField(label='이메일')
+    password = PasswordField(label='패스워드')
+    confirm_password = PasswordField(label='패스워드 재확인')
+    name = TextField(label='이름')
+    jbnu_student = BooleanField(label='전북대학교 학생입니까?')
+    student_number = TextField(label='학번')
+    department = TextField(label='학부(과)')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
