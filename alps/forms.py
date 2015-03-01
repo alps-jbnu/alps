@@ -8,8 +8,25 @@ from wtforms.validators import (Email, EqualTo, InputRequired, Length, Regexp,
 from alps.db import session
 from alps.user import User
 
-__all__ = ('id_len_msg', 'login_error_msg', 'id_char_msg',
-           'pw_len_msg', 'SignInForm', 'SignUpForm')
+__all__ = (
+    'email_msg',
+    'id_char_msg',
+    'id_len_msg',
+    'id_required_msg',
+    'login_error_msg',
+    'name_char_msg',
+    'name_len_msg',
+    'nickname_char_msg',
+    'nickname_len_msg',
+    'pw_confirm_msg',
+    'pw_len_msg',
+    'pw_required_msg',
+    'required_field_msg',
+    'SignInForm',
+    'SignUpForm',
+    'student_number_char_msg',
+    'student_number_len_msg',
+)
 
 
 class UnicodeLength(object):
@@ -86,7 +103,7 @@ nickname_char_msg = '닉네임은 영문, 한글, 숫자, 사이 공백만 가�
 
 # The validator only allows English, Hangul, digit and whitespace characters.
 # But, it doesn't allow leading or trailing whitespace
-# and two or more whitespaces.
+# and two or more continuous whitespaces.
 nickname_char_validator = Regexp(
     '(?!^[ ].*$)(?!^.*[ ]$)(?!^.*[ ]{2,}.*$)^[a-zA-Z0-9ㄱ-ㅣ가-힣 ]*$',
     message=nickname_char_msg
