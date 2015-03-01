@@ -17,19 +17,19 @@
 </div>
 {% endmacro %}
 
-{% macro render_register_field(field, required=false, jbnu_attr=false) %}
+{% macro render_register_field(field, jbnu_attr=False) %}
 <div class="form-group{% if field.errors %} has-error{% endif %}{% if jbnu_attr %} jbnu{% endif %}">
   <label class="col-md-3 control-label">
     {{ field.label.text }}
-    {% if required %}
+    {% if field.flags.required %}
       <span class="required">*</span>
     {% endif %}
   </label>
   <div class="col-md-9">
     {% if field.errors %}
-      {% set field_class = 'form-control required has-error'%}
+      {% set field_class = 'form-control has-error'%}
     {% else %}
-      {% set field_class = 'form-control required '%}
+      {% set field_class = 'form-control '%}
     {% endif %}
 
     {% if field.type == 'BooleanField' %}
@@ -39,6 +39,10 @@
     {% else %}
       {{ field(class=field_class, **kwargs)|safe }}
     {% endif %}
+
+    {% for msg in field.errors %}
+      <label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
+    {% endfor %}
   </div>
 </div>
 {% endmacro %}
