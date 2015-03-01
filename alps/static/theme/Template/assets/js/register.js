@@ -3,7 +3,7 @@ var Register = function() {
 	"use strict";
 
 	var renderStudentCheckBox = function() {
-		var checkbox = $("input[name='jbnu-student']");
+		var checkbox = $("input[name='jbnu_student']");
 		if (checkbox.is(':checked')) {
 			$("div.jbnu").removeClass('hidden');
 		} else {
@@ -12,7 +12,7 @@ var Register = function() {
 	};
 
 	var initStudentCheckBox = function() {
-		var checkbox = $("input[name='jbnu-student']");
+		var checkbox = $("input[name='jbnu_student']");
 		checkbox.change(function() {
 			renderStudentCheckBox();
 		});
