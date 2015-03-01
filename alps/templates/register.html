@@ -1,3 +1,5 @@
+{% from "_form_helpers.html" import render_register_field %}
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -68,62 +70,19 @@ $(document).ready(function(){
 				</div>
 				<div class="widget-content">
 					<form class="form-horizontal row-border" action="{{ url_for('register') }}" method="POST">
-						<div class="form-group">
-							<label class="col-md-3 control-label">아이디 <span class="required">*</span></label>
-							<div class="col-md-9">
-								<input name="username" class="form-control required" type="text">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">닉네임 <span class="required">*</span></label>
-							<div class="col-md-9">
-								<input name="nickname" class="form-control required" type="text">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">이메일 <span class="required">*</span></label>
-							<div class="col-md-9">
-								<input name="email" class="form-control required email" type="text">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">패스워드 <span class="required">*</span></label>
-							<div class="col-md-9">
-								<input name="password" class="form-control required" type="password">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">패스워드 재확인 <span class="required">*</span></label>
-							<div class="col-md-9">
-								<input name="confirm-password" class="form-control required" type="password">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">이름 </label>
-							<div class="col-md-9">
-								<input name="name" class="form-control required" type="text">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-3 control-label">전북대학교 학생입니까? </label>
-							<div class="col-md-9">
-								<label class="checkbox">
-									<input type="checkbox" class="uniform" name="jbnu-student" value="yes"> 네
-								</label>
-							</div>
-						</div>
-						<div class="form-group jbnu hidden">
-							<label class="col-md-3 control-label">학번 </label>
-							<div class="col-md-9">
-								<input name="student-number" class="form-control required" type="text">
-							</div>
-						</div>
-						<div class="form-group jbnu hidden">
-							<label class="col-md-3 control-label">학부(과) </label>
-							<div class="col-md-9">
-								<input name="department" class="form-control required" type="text">
-							</div>
-						</div>
+						<!-- Input Fields -->
+						{{ render_register_field(field=form.username, required=True) }}
+						{{ render_register_field(field=form.nickname, required=True) }}
+						{{ render_register_field(field=form.email, required=True) }}
+						{{ render_register_field(field=form.password, required=True) }}
+						{{ render_register_field(field=form.confirm_password, required=True) }}
+						{{ render_register_field(field=form.name) }}
+						{{ render_register_field(field=form.jbnu_student) }}
+						{{ render_register_field(field=form.student_number, jbnu_attr=True) }}
+						{{ render_register_field(field=form.department, jbnu_attr=True) }}
+						{{ form.csrf_token }}
+						<!-- /Input Fields -->
+
 						<div class="form-actions">
 							<input value="확인" class="btn btn-primary pull-right" type="submit">
 						</div>
