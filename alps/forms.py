@@ -14,8 +14,8 @@ login_error_msg = (
 )
 
 id_char_msg = '아이디는 영문, 숫자, 일부 특수문자만 가능합니다.'
-no_space_validator = Regexp('^[a-zA-Z0-9_.\\-]*$',
-                            message=id_char_msg)
+id_char_validator = Regexp('^[a-zA-Z0-9_.\\-]*$',
+                           message=id_char_msg)
 
 id_length_msg = '아이디의 길이는 4자 이상, 25자 이하여야 합니다.'
 id_length_validator = Length(min=4, max=25,
@@ -28,7 +28,7 @@ password_length_validator = Length(min=8, max=50,
 
 class SignInForm(Form):
     username = TextField(label='아이디',
-                         validator=[no_space_validator, id_length_validator])
+                         validator=[id_char_validator, id_length_validator])
     password = PasswordField(label='패스워드',
                              validator=[password_length_validator])
 
@@ -62,7 +62,7 @@ class SignInForm(Form):
 class SignUpForm(Form):
     # TODO: more arguments required in the below fields!
 
-    username = TextField(label='아이디')
+    username = TextField(label='아이디', )
     nickname = TextField(label='닉네임')
     email = TextField(label='이메일')
     password = PasswordField(label='패스워드')
