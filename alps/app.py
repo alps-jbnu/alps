@@ -83,7 +83,13 @@ def login():
 def register():
     form = SignUpForm()
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('register.html', form=form)
+        else:
+            # TODO: insert the user in DB
+            return redirect(url_for('index'))
+    elif request.method == 'GET':
         return render_template('register.html', form=form)
 
 
