@@ -71,11 +71,11 @@ $(document).ready(function(){
 				<div class="widget-content">
 					<form class="form-horizontal row-border" action="{{ url_for('register') }}" method="POST">
 						<!-- Input Fields -->
-						{{ render_register_field(field=form.username, required=True) }}
-						{{ render_register_field(field=form.nickname, required=True) }}
-						{{ render_register_field(field=form.email, required=True) }}
-						{{ render_register_field(field=form.password, required=True) }}
-						{{ render_register_field(field=form.confirm_password, required=True) }}
+						{{ render_register_field(field=form.username) }}
+						{{ render_register_field(field=form.nickname) }}
+						{{ render_register_field(field=form.email,) }}
+						{{ render_register_field(field=form.password) }}
+						{{ render_register_field(field=form.confirm_password) }}
 						{{ render_register_field(field=form.name) }}
 						{{ render_register_field(field=form.jbnu_student) }}
 						{{ render_register_field(field=form.student_number, jbnu_attr=True) }}
