@@ -1,12 +1,12 @@
 from flask.ext.wtf import Form
-from wtforms import PasswordField, TextField
+from wtforms import BooleanField, PasswordField, TextField
 from wtforms.validators import Regexp, Length
 
 from alps.db import session
 from alps.user import User
 
 __all__ = ('id_length_msg', 'login_error_msg', 'id_char_msg',
-           'password_length_msg', 'SignInForm')
+           'password_length_msg', 'SignInForm', 'SignUpForm')
 
 login_error_msg = (
     '등록되지 않은 아이디이거나, '
@@ -60,4 +60,25 @@ class SignInForm(Form):
 
 
 class SignUpForm(Form):
-    pass
+    # TODO: more arguments required in the below fields!
+
+    username = TextField('아이디')
+    nickname = TextField('닉네임')
+    email = TextField('이메일')
+    password = PasswordField('패스워드')
+    confirm_password = PasswordField('패스워드 재확인')
+    name = TextField('이름')
+    jbnu_student = BooleanField('전북대학교 학생입니까?')
+    student_number = TextField('학번')
+    department = TextField('학부(과)')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def validate(self):
+        if not super().validate():
+            return False
+
+        # TODO: validate me!
+
+        return True
