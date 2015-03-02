@@ -73,7 +73,7 @@ def score_result(session_secret):
     check_configuration()
     data = {'scoring_key': config['scoring_key'],
             'session_secret': session_secret}
-    values = urllib.parse.urlencode(data)
+    values = urllib.parse.urlencode(data).encode('utf8')
     response = urllib.request.urlopen(config['scoring_url'], values)
     result = False
     if response.code == 200:
