@@ -80,6 +80,24 @@ $(document).ready(function(){
 						{{ render_register_field(field=form.jbnu_student) }}
 						{{ render_register_field(field=form.student_number, jbnu_attr=True) }}
 						{{ render_register_field(field=form.department, jbnu_attr=True) }}
+
+						{% if ayah %}
+						<!-- are-you-a-human -->
+						<div class="form-group{% if form.errors['ayah'] %} has-error{% endif %}">
+							<label class="col-md-3 control-label">
+								자동 가입 방지
+								<span class="required">*</span>
+							</label>
+							<div class="col-md-9">
+								{{ ayah|safe }}
+								{% if form.errors.get('ayah', None) %}
+									<label for="ayah" generated="true" class="has-error help-block">자동 가입 방지를 위해 게임을 완료해주세요.</label>
+								{% endif %}
+							</div>
+						</div>
+						<!-- /are-you-a-human -->
+						{% endif %}
+
 						{{ form.csrf_token }}
 						<!-- /Input Fields -->
 

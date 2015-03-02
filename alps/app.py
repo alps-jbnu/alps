@@ -8,6 +8,7 @@ from flask.ext.login import (LoginManager, login_required, login_user,
 from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
 
+from alps import ayah
 from alps.config import read_config
 from alps.db import session, setup_session
 from alps.forms import login_error_msg, SignInForm, SignUpForm
@@ -41,7 +42,13 @@ def initialize_app(app=None, config_dict=None):
         raise ValueError('argument config_dict is missing or None')
     if not isinstance(config_dict, collections.abc.Mapping):
         raise ValueError('argument config_dict is not a dictionary type')
+
     app.config.update(config_dict)
+
+    # Make Game Style Embedded.
+    # Add your Publisher Key and Scoring Key to Config File.
+    ayah.configure(app.config['AYAH_PUBLISHER_KEY'],
+                   app.config['AYAH_SCORING_KEY'])
 
 
 try:
@@ -82,15 +89,33 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = SignUpForm()
+    use_ayah = app.config['USE_AYAH']
 
     if request.method == 'POST':
-        if not form.validate():
-            return render_template('register.html', form=form)
+        if use_ayah:
+            ayah_passed = ayah.score_result(request.form['session_secret'])
+        else:
+            ayah_passed = None
+
+        if not form.validate() or (use_ayah and not ayah_passed):
+            if (use_ayah and not ayah_passed):
+                form.errors.update({'ayah': ['AYAH test failed']})
+
+            if use_ayah:
+                return render_template('register.html', form=form,
+                                       ayah=ayah.get_publisher_html())
+            else:
+                return render_template('register.html', form=form)
         else:
             # TODO: insert the user in DB
+            # TODO: show message for new user
             return redirect(url_for('index'))
     elif request.method == 'GET':
-        return render_template('register.html', form=form)
+        if use_ayah:
+            return render_template('register.html', form=form,
+                                   ayah=ayah.get_publisher_html())
+        else:
+            return render_template('register.html', form=form)
 
 
 @app.route('/test_mail')

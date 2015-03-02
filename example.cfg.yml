@@ -6,3 +6,6 @@ MAIL_USE_TLS: True
 MAIL_USERNAME: alps.jbnu@gmail.com
 MAIL_PASSWORD: mail_password
 DEFAULT_MAIL_SENDER: 'ALPS <alps.jbnu@gmail.com>'
+USE_AYAH: !!bool true
+AYAH_PUBLISHER_KEY: abcdefghijklmnopqrstuvwxyz01234567890abc
+AYAH_SCORING_KEY: abcdefghijklmnopqrstuvwxyz01234567890abc
