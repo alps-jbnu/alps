@@ -7,6 +7,7 @@ from flask.ext.login import (LoginManager, login_required, login_user,
                              logout_user)
 from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
+from raven.contrib.flask import Sentry
 
 from alps import ayah
 from alps.config import read_config
@@ -31,9 +32,6 @@ login_manager.login_view = 'login'
 csrf_protect.init_app(app)
 mail.init_app(app)
 
-# import logging, sys
-# logging.basicConfig(stream=sys.stderr)
-
 
 def initialize_app(app=None, config_dict=None):
     if app is None:
@@ -49,6 +47,10 @@ def initialize_app(app=None, config_dict=None):
     # Add your Publisher Key and Scoring Key to Config File.
     ayah.configure(app.config['AYAH_PUBLISHER_KEY'],
                    app.config['AYAH_SCORING_KEY'])
+
+    # Init Sentry.
+    sentry = Sentry(dsn=app.config['SENTRY_DSN'])
+    sentry.init_app(app)
 
 
 try:
