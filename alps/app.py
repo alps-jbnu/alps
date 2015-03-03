@@ -28,9 +28,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 csrf_protect.init_app(app)
 
-# import logging, sys
-# logging.basicConfig(stream=sys.stderr)
-
 
 def initialize_app(app=None, config_dict=None):
     if app is None:
