@@ -6,7 +6,7 @@ addons:
 before_install:
   - sudo apt-get update -qq
 install:
-  - "pip install .[tests]"
+  - "pip install -e .[tests]"
 before_script:
   - createdb alps_test -U postgres
   - createdb alembic_test -U postgres
