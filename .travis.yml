@@ -7,6 +7,7 @@ before_install:
   - sudo apt-get update -qq
 install:
   - "pip install -e .[tests]"
+  - "pip install flake8 psycopg2"
 before_script:
   - createdb alps_test -U postgres
   - createdb alembic_test -U postgres
