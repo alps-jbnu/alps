@@ -6,6 +6,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from flask.ext.login import (LoginManager, login_required, login_user,
                              logout_user)
 from flask_wtf.csrf import CsrfProtect
+from raven.contrib.flask import Sentry
 
 from alps.config import read_config
 from alps.db import session, setup_session
@@ -39,6 +40,9 @@ def initialize_app(app=None, config_dict=None):
     if not isinstance(config_dict, collections.abc.Mapping):
         raise ValueError('argument config_dict is not a dictionary type')
     app.config.update(config_dict)
+
+    sentry = Sentry(dsn=app.config['SENTRY_DSN'])
+    sentry.init_app(app)
 
 
 try:
