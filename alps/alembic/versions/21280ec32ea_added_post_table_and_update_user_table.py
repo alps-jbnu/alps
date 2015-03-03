@@ -6,14 +6,14 @@ Create Date: 2015-01-25 11:24:32.092617
 
 """
 
+from alembic import op
+import sqlalchemy as sa
+
 # revision identifiers, used by Alembic.
 revision = '21280ec32ea'
 down_revision = '470e79f449a'
 branch_labels = None
 depends_on = None
-
-from alembic import op
-import sqlalchemy as sa
 
 
 # WARNING: not nullable columns added without server_default!!!

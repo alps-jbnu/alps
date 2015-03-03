@@ -38,8 +38,9 @@ def initialize_app(app=None, config_dict=None):
         raise ValueError('argument config_dict is not a dictionary type')
     app.config.update(config_dict)
 
-    sentry = Sentry(dsn=app.config['SENTRY_DSN'])
-    sentry.init_app(app)
+    if app.config['USE_SENTRY']:
+        sentry = Sentry(dsn=app.config['SENTRY_DSN'])
+        sentry.init_app(app)
 
 
 try:

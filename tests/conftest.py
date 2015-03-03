@@ -43,7 +43,8 @@ def fx_flask_client(fx_session):
         dict(SECRET_KEY='pytest',
              TESTING=True,
              WTF_CSRF_ENABLED=False,
-             TEST_SESSION=fx_session)
+             TEST_SESSION=fx_session,
+             USE_SENTRY=False)
     )
     return app.test_client()
 

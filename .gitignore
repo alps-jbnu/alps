@@ -39,3 +39,6 @@ docs/_build/
 
 # Exception for example configuration file
 !example.cfg.yml
+
+# Exception for Travis CI
+!.travis.yml

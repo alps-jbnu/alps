@@ -1,0 +1,20 @@
+language: python
+python:
+  - "3.4"
+addons:
+  postgresql: "9.3"
+before_install:
+  - sudo apt-get update -qq
+install:
+  - "pip install -e .[tests]"
+  - "pip install flake8 psycopg2"
+before_script:
+  - createdb alps_test -U postgres
+  - createdb alembic_test -U postgres
+  - alps migration postgresql:///alembic_test "alembic upgrade head"
+  - alps migration postgresql:///alembic_test "alembic downgrade 470e79f449a"
+  - alps migration postgresql:///alembic_test "alembic upgrade head"
+script:
+  - hooks/pre-commit
+  - py.test -vv --duration=20 --database-url='postgresql:///alps_test'
+  - py.test -vv --duration=20
