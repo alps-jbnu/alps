@@ -1,7 +1,7 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column
 from sqlalchemy.sql.functions import now
-from sqlalchemy.types import DateTime, Integer, String
+from sqlalchemy.types import Boolean, DateTime, Integer, String
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from alps.db import Base
@@ -12,10 +12,15 @@ __all__ = 'User',
 class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String, index=True, nullable=False, unique=True)
-    pwhash = Column(String, nullable=False)
-    name = Column(String, index=True, nullable=False)
-    email = Column(String, index=True, nullable=False)
     nickname = Column(String, index=True, nullable=False, unique=True)
+    email = Column(String, index=True, nullable=False, unique=True)
+    pwhash = Column(String, nullable=False)
+    name = Column(String, index=True)
+    description = Column(String)
+    is_jbnu_student = Column(Boolean, index=True, nullable=False,
+                             default=False, server_default='0')
+    student_number = Column(String, index=True)
+    department = Column(String, index=True)
 
     posts = relationship('Post',
                          cascade='all, delete-orphan',
