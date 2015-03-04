@@ -1,7 +1,7 @@
 import re
 
 from flask.ext.wtf import Form
-from wtforms import BooleanField, PasswordField, TextField
+from wtforms import BooleanField, PasswordField, TextAreaField, TextField
 from wtforms.validators import (Email, EqualTo, InputRequired, Length, Regexp,
                                 ValidationError)
 
@@ -9,6 +9,8 @@ from alps.db import session
 from alps.user import User
 
 __all__ = (
+    'dept_len_msg',
+    'desc_len_msg',
     'email_msg',
     'id_char_msg',
     'id_len_msg',
@@ -125,6 +127,10 @@ name_len_msg = '이름은 2자 이상, 10자 이하여야 합니다.'
 name_len_validator = OptionalLength(min=2, max=10,
                                     message=name_len_msg)
 
+desc_len_msg = '소개는 최대 200자 이내로 작성해 주세요.'
+desc_len_validator = OptionalLength(max=200,
+                                    message=desc_len_msg)
+
 student_number_char_msg = '학번은 숫자로만 구성됩니다.'
 student_number_char_validator = Regexp('^[0-9]*$',
                                        message=student_number_char_msg)
@@ -132,6 +138,10 @@ student_number_char_validator = Regexp('^[0-9]*$',
 student_number_len_msg = '학번은 9글자여야 합니다.'
 student_number_len_validator = OptionalLength(min=9, max=9,
                                               message=student_number_len_msg)
+
+dept_len_msg = '학부(과) 이름이 너무 깁니다.'
+dept_len_validator = OptionalLength(max=30,
+                                    message=dept_len_msg)
 
 
 class SignInForm(Form):
@@ -188,8 +198,10 @@ class SignUpForm(Form):
     name = TextField(label='이름',
                      validators=[name_char_validator,
                                  name_len_validator])
+    description = TextAreaField(label='소개',
+                                validators=[desc_len_validator])
     jbnu_student = BooleanField(label='전북대학교 학생입니까?')
     student_number = TextField(label='학번',
                                validators=[student_number_char_validator,
                                            student_number_len_validator])
-    department = TextField(label='학부(과)')
+    department = TextField(label='학부(과)', validators=[dept_len_validator])

@@ -3,6 +3,8 @@ import re
 from flask import url_for
 
 from alps.forms import (
+    dept_len_msg,
+    desc_len_msg,
     email_msg,
     id_char_msg,
     id_len_msg,
@@ -47,6 +49,7 @@ proper_register_data = dict(
     password='my-new-secret-password',
     confirm_password='my-new-secret-password',
     name='홍길동',
+    description='안녕하세요? 홍길동입니다.',
     jbnu_student='y',
     student_number='101599999',
     department='컴퓨터공학부',
@@ -353,3 +356,31 @@ def test_register_with_improper_len_of_student_num(fx_flask_client,
     response = post_register_form(fx_flask_client, **data)
     assert err_cls_re.search(response.data.decode(encoding='utf-8'))
     assert student_number_len_msg in response.data.decode(encoding='utf-8')
+
+
+def test_register_with_improper_len_of_desc(fx_flask_client,
+                                            fx_request_context,
+                                            fx_session,
+                                            fx_users):
+    data = proper_register_data.copy()
+    data['description'] = (
+        '12345678901234567890123456789012345678901234567890'
+        '12345678901234567890123456789012345678901234567890'
+        '12345678901234567890123456789012345678901234567890'
+        '12345678901234567890123456789012345678901234567890'
+        '1'
+    )
+    response = post_register_form(fx_flask_client, **data)
+    assert err_cls_re.search(response.data.decode(encoding='utf-8'))
+    assert desc_len_msg in response.data.decode(encoding='utf-8')
+
+
+def test_register_with_improper_len_of_dept(fx_flask_client,
+                                            fx_request_context,
+                                            fx_session,
+                                            fx_users):
+    data = proper_register_data.copy()
+    data['department'] = '정말로 긴 학과의 이름입니다. (30자를 넘습니다...)'
+    response = post_register_form(fx_flask_client, **data)
+    assert err_cls_re.search(response.data.decode(encoding='utf-8'))
+    assert dept_len_msg in response.data.decode(encoding='utf-8')
