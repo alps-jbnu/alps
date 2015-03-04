@@ -110,15 +110,20 @@ def register():
             else:
                 return render_template('register.html', form=form)
         else:
-            # TODO: insert the user in DB
-            # TODO: show message for new user
-            return redirect(url_for('index'))
+            # TODO: Insert the user in DB.
+            # TODO: Send confirm mail to the user.
+            return redirect('register_complete')
     elif request.method == 'GET':
         if use_ayah:
             return render_template('register.html', form=form,
                                    ayah=ayah.get_publisher_html())
         else:
             return render_template('register.html', form=form)
+
+
+@app.route('/register/complete')
+def register_complete():
+    return render_template('register_form_complete.html')
 
 
 @app.route('/test_mail')
