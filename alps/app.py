@@ -49,8 +49,9 @@ def initialize_app(app=None, config_dict=None):
                    app.config['AYAH_SCORING_KEY'])
 
     # Init Sentry.
-    sentry = Sentry(dsn=app.config['SENTRY_DSN'])
-    sentry.init_app(app)
+    if app.config['USE_SENTRY']:
+        sentry = Sentry(dsn=app.config['SENTRY_DSN'])
+        sentry.init_app(app)
 
 
 try:

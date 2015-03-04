@@ -44,7 +44,8 @@ def fx_flask_client(fx_session):
              TESTING=True,
              WTF_CSRF_ENABLED=False,
              TEST_SESSION=fx_session,
-             USE_AYAH=False)
+             USE_AYAH=False,
+             USE_SENTRY=False)
     )
     return app.test_client()
 
