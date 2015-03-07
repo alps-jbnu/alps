@@ -3,7 +3,7 @@ import types
 
 from pytest import fixture, yield_fixture
 
-from alps.app import app
+from alps.app import app, initialize_app
 from alps.db import Base, get_engine, get_session
 from alps.post import Post
 from alps.user import User
@@ -44,8 +44,11 @@ def fx_flask_client(fx_session):
              TESTING=True,
              WTF_CSRF_ENABLED=False,
              TEST_SESSION=fx_session,
-             USE_SENTRY=False)
+             USE_AYAH=False,
+             USE_SENTRY=False,
+             SEND_MAIL=False)
     )
+    initialize_app(app)
     return app.test_client()
 
 
@@ -77,33 +80,34 @@ def fx_users(fx_session):
     f = FixtureModule('fx_users')
 
     # 사용자를 추가합니다.
-    f.user_1 = User(username='yesman', name='장그래', nickname='그래',
-                    email='yes@alps.jbnu.ac.kr')
+    f.user_1 = User(
+        username='yesman',
+        nickname='그래',
+        email='yes@alps.jbnu.ac.kr',
+        name='장그래',
+        description='안녕하세요. 장그래입니다.'
+    )
     f.user_1.set_password('iamayesman')
-    f.user_2 = User(username='hihi', name='안영이', nickname='안녕',
-                    email='hi@alps.jbnu.ac.kr')
-    f.user_2.set_password('hellohello')
-    f.user_3 = User(username='alps', name='알프스', nickname='알프스',
-                    email='alps@alps.jbnu.ac.kr')
-    f.user_3.set_password('alpspassword')
 
-    # 아래는 폼 테스트를 위한 잘못된 사용자입니다. (로그인조차 불가능)
-    f.user_4 = User(username='alps!@#$', name='익명',
-                    nickname='특수문자ID유저',
-                    email='user4@alps.jbnu.ac.kr')
-    f.user_4.set_password('user4password')
-    f.user_5 = User(username='alps user', name='익명',
-                    nickname='공백ID유저',
-                    email='user5@alps.jbnu.ac.kr')
-    f.user_5.set_password('user5password')
-    f.user_6 = User(username='alp', name='익명',
-                    nickname='짧은ID유저',
-                    email='user6@alps.jbnu.ac.kr')
-    f.user_6.set_password('user6password')
-    f.user_7 = User(username='alpsuser', name='익명',
-                    nickname='짧은패스워드유저',
-                    email='user7@alps.jbnu.ac.kr')
-    f.user_7.set_password('user7')
+    f.user_2 = User(
+        username='hihi',
+        nickname='안녕',
+        email='hi@alps.jbnu.ac.kr',
+        name='안영이',
+    )
+    f.user_2.set_password('hellohello')
+
+    f.user_3 = User(
+        username='alps',
+        nickname='알프스',
+        email='alps@alps.jbnu.ac.kr',
+        name='알프스',
+        description='알프스입니다.',
+        is_jbnu_student=True,
+        student_number='101512345',
+        department='컴퓨터공학부',
+    )
+    f.user_3.set_password('alpspassword')
 
     with fx_session.begin():
         fx_session.add_all([f.user_1, f.user_2, f.user_3])

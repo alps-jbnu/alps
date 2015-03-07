@@ -1,4 +1,14 @@
 DATABASE_URL: driver://user:pass@localhost/dbname
 SECRET_KEY: secret
-USE_SENTRY: !!bool true
+SEND_MAIL: true
+MAIL_SERVER: smtp.gmail.com
+MAIL_PORT: 587
+MAIL_USE_TLS: true
+MAIL_USERNAME: alps.jbnu@gmail.com
+MAIL_PASSWORD: mail_password
+DEFAULT_MAIL_SENDER: 'ALPS <alps.jbnu@gmail.com>'
+USE_AYAH: true
+AYAH_PUBLISHER_KEY: abcdefghijklmnopqrstuvwxyz01234567890abc
+AYAH_SCORING_KEY: abcdefghijklmnopqrstuvwxyz01234567890abc
+USE_SENTRY: true
 SENTRY_DSN: http://public_key:secret_key@example.com/1

@@ -29,6 +29,8 @@ def runserver(debug, port, config):
     if config:
         config_dict = read_config(pathlib.Path(config))
         initialize_app(app=app, config_dict=config_dict)
+    else:
+        print('Running server without specifying config file in options...')
     app.run(debug=debug, port=port)
 
 
