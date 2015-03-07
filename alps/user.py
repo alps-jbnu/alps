@@ -1,3 +1,4 @@
+import enum
 import uuid
 
 from sqlalchemy.orm import relationship
@@ -8,7 +9,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from alps.db import Base
 
-__all__ = 'User',
+__all__ = 'MemberType', 'User'
+
+
+class MemberType(enum.Enum):
+    non_member = 0
+    member = 50
+    executive = 70
+    admin = 90
 
 
 class User(Base):
@@ -27,6 +35,10 @@ class User(Base):
     email_validated = Column(Boolean, nullable=False,
                              default=False, server_default='1')
     confirm_token = Column(String(100), index=True)
+
+    member_type = Column(Integer, nullable=False,
+                         default=MemberType.non_member.value,
+                         server_default='0')
 
     posts = relationship('Post',
                          cascade='all, delete-orphan',
