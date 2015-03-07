@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block container %}
+	<!--=== Page Header ===-->
+	<div class="empty-page-header">
+	</div>
+	<!-- /Page Header -->
+
+	<!--=== Page Content ===-->
+	<div class="col-md-12">
+		<div class="widget box">
+			<div class="widget-header">
+				<h4> 회원가입</h4>
+				<div class="toolbar no-padding">
+				</div>
+			</div>
+			<div class="widget-content">
+				<h3 style="margin-top: 10px; padding-bottom: 10px;"><strong>이메일 인증을 완료했습니다.</strong></h3>
+				<p>이제 계정을 사용하실 수 있습니다. 다시 로그인 하시려면, 아래 버튼을 클릭하세요.</p>
+				<p><a href="{{ url_for('login') }}" class="btn btn-primary" role="button">로그인</a><p>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+{% endblock %}

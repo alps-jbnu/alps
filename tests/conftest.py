@@ -3,7 +3,7 @@ import types
 
 from pytest import fixture, yield_fixture
 
-from alps.app import app
+from alps.app import app, initialize_app
 from alps.db import Base, get_engine, get_session
 from alps.post import Post
 from alps.user import User
@@ -45,8 +45,10 @@ def fx_flask_client(fx_session):
              WTF_CSRF_ENABLED=False,
              TEST_SESSION=fx_session,
              USE_AYAH=False,
-             USE_SENTRY=False)
+             USE_SENTRY=False,
+             SEND_MAIL=False)
     )
+    initialize_app(app)
     return app.test_client()
 
 

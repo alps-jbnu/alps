@@ -1,8 +1,7 @@
-import collections.abc
 import os
 import pathlib
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import abort, Flask, redirect, render_template, request, url_for
 from flask.ext.login import (LoginManager, login_required, login_user,
                              logout_user)
 from flask.ext.mail import Mail, Message
@@ -23,30 +22,29 @@ import_all_modules()
 
 app = Flask(__name__, template_folder='templates')
 setup_session(app)
+
 login_manager = LoginManager()
 csrf_protect = CsrfProtect()
 mail = Mail()
-
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-csrf_protect.init_app(app)
-mail.init_app(app)
 
 
 def initialize_app(app=None, config_dict=None):
     if app is None:
         raise ValueError('argument app is missing or None')
-    if config_dict is None:
-        raise ValueError('argument config_dict is missing or None')
-    if not isinstance(config_dict, collections.abc.Mapping):
-        raise ValueError('argument config_dict is not a dictionary type')
 
-    app.config.update(config_dict)
+    if config_dict:
+        app.config.update(config_dict)
+
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+    csrf_protect.init_app(app)
+    mail.init_app(app)
 
     # Make Game Style Embedded.
     # Add your Publisher Key and Scoring Key to Config File.
-    ayah.configure(app.config['AYAH_PUBLISHER_KEY'],
-                   app.config['AYAH_SCORING_KEY'])
+    if app.config['USE_AYAH']:
+        ayah.configure(app.config['AYAH_PUBLISHER_KEY'],
+                       app.config['AYAH_SCORING_KEY'])
 
     # Init Sentry.
     if app.config['USE_SENTRY']:
@@ -110,9 +108,58 @@ def register():
             else:
                 return render_template('register.html', form=form)
         else:
-            # TODO: Insert the user in DB.
-            # TODO: Send confirm mail to the user.
-            return redirect('register_complete')
+            is_jbnu_student = False
+            student_number = None
+            department = None
+            if form.jbnu_student.data:
+                is_jbnu_student = True
+                if form.student_number.data:
+                    student_number = form.student_number.data
+                if form.department.data:
+                    department = form.department.data
+
+            # Create new user.
+            new_user = User(
+                username=form.username.data,
+                nickname=form.nickname.data,
+                email=form.email.data,
+                name=form.name.data,
+                description=form.description.data,
+                is_jbnu_student=is_jbnu_student,
+                student_number=student_number,
+                department=department,
+            )
+            new_user.set_password(form.password.data)
+            new_user.generate_confirm_token()
+
+            # Insert the new user.
+            with session.begin():
+                session.add(new_user)
+
+            # Send confirm mail to the user.
+            if app.config['SEND_MAIL']:
+                msg_body = render_template(
+                    'confirm_mail.html',
+                    nickname=new_user.nickname,
+                    link=url_for('register_confirm',
+                                 confirm_token=new_user.confirm_token,
+                                 _external=True),
+                    confirm_token=new_user.confirm_token
+                )
+                msg = Message(
+                    '알프스 회원가입 확인',
+                    html=msg_body,
+                    recipients=[new_user.email]
+                )
+                msg.sender = app.config['DEFAULT_MAIL_SENDER']
+                mail.send(msg)
+            else:
+                # Skip sending confirm mail
+                with session.begin():
+                    new_user.email_validated = True
+                    new_user.confirm_token = None
+
+            return redirect(url_for('register_complete'))
     elif request.method == 'GET':
         if use_ayah:
             return render_template('register.html', form=form,
@@ -123,17 +170,25 @@ def register():
 
 @app.route('/register/complete')
 def register_complete():
-    return render_template('register_form_complete.html')
+    return render_template('register_complete.html')
 
 
-@app.route('/test_mail')
-def test_mail():
-    msg = Message('Hello',
-                  body='Hello, World!',
-                  recipients=["test@example.com"])
-    msg.sender = app.config['DEFAULT_MAIL_SENDER']
-    mail.send(msg)
-    return redirect(url_for('index'))
+@app.route('/register/email_confirmed')
+def email_confirmed():
+    return render_template('email_confirmed.html')
+
+
+@app.route('/register/confirm/<confirm_token>')
+def register_confirm(confirm_token):
+    user = session.query(User).filter_by(confirm_token=confirm_token).first()
+    if not user:
+        abort(404)
+
+    logout_user()
+    user.email_validated = True
+    with session.begin():
+        user.confirm_token = None  # Delete token
+    return redirect(url_for('email_confirmed'))
 
 
 @app.route('/logout')

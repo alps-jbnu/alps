@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column
 from sqlalchemy.sql.functions import now
@@ -22,6 +24,10 @@ class User(Base):
     student_number = Column(String, index=True)
     department = Column(String, index=True)
 
+    email_validated = Column(Boolean, nullable=False,
+                             default=False, server_default='1')
+    confirm_token = Column(String, index=True)
+
     posts = relationship('Post',
                          cascade='all, delete-orphan',
                          lazy='dynamic')
@@ -36,8 +42,7 @@ class User(Base):
         return check_password_hash(self.pwhash, password)
 
     def is_active(self):
-        # TODO: email validation
-        return True
+        return self.email_validated
 
     def is_authenticated(self):
         return True
@@ -47,5 +52,9 @@ class User(Base):
 
     def get_id(self):
         return self.username
+
+    def generate_confirm_token(self):
+        if not self.confirm_token:
+            self.confirm_token = str(uuid.uuid4())
 
     __tablename__ = 'users'
