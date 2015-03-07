@@ -31,10 +31,10 @@ class Post(Base):
     title = Column(String(100), index=True, nullable=False)
     content = Column(Text, nullable=False)
 
-    user_id = Column(Integer, ForeignKey(User.id))
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     user = relationship(User)
 
-    board_id = Column(Integer, ForeignKey(Board.id))
+    board_id = Column(Integer, ForeignKey(Board.id), nullable=False)
     board = relationship(Board)
 
     created_at = Column(DateTime(timezone=True), nullable=False,
