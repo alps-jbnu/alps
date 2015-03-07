@@ -36,7 +36,7 @@ class User(Base):
                         default=now())
 
     def set_password(self, password):
-        self.pwhash = generate_password_hash(password)
+        self.pwhash = generate_password_hash(password, method='pbkdf2:sha256:2000')
 
     def check_password(self, password):
         return check_password_hash(self.pwhash, password)
