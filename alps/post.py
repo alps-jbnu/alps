@@ -11,7 +11,7 @@ __all__ = 'Post',
 
 class Post(Base):
     id = Column(Integer, primary_key=True)
-    title = Column(String, index=True, nullable=False)
+    title = Column(String(100), index=True, nullable=False)
     content = Column(Text, nullable=False)
 
     user_id = Column(Integer, ForeignKey(User.id))
