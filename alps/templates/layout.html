@@ -105,8 +105,6 @@
 
 		<!-- Demo JS -->
 		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/pages_calendar.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_filled_blue.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='theme/Template/assets/js/demo/charts/chart_simple.js') }}"></script>
 	{% endblock %}
 </head>
 
@@ -226,37 +224,63 @@
 				<ul id="nav">
 					<li>
 						<a href="">
-							<i class="icon-rss"></i>
+							<i class="icon-fixed-width icon-rss"></i>
 							뉴스 피드
 						</a>
 					</li>
 					<li>
 						<a href="">
-							<i class="icon-bullhorn"></i>
-							공지사항
+							<i class="icon-fixed-width icon-bullhorn"></i>
+							동아리 소개
 						</a>
 					</li>
 					<li>
 						<a href="">
-							<i class="icon-edit"></i>
-							자유게시판
+							<i class="icon-fixed-width icon-edit"></i>
+							게시판
 						</a>
+						<ul class="sub-menu">
+							<li>
+								<a href="">
+									<i class="icon-angle-right"></i>
+									공지사항
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<i class="icon-angle-right"></i>
+									자유게시판
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<i class="icon-angle-right"></i>
+									회원게시판
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<i class="icon-angle-right"></i>
+									질문과 답변
+								</a>
+							</li>
+						</ul>
 					</li>
 					<li>
 						<a href="">
-							<i class="icon-lock"></i>
-							회원게시판
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<i class="icon-lightbulb"></i>
+							<i class="icon-fixed-width icon-lightbulb"></i>
 							문제 풀이
 						</a>
 					</li>
 					<li>
 						<a href="">
-							<i class="icon-calendar"></i>
+							<i class="icon-fixed-width icon-comments"></i>
+							스터디
+						</a>
+					</li>
+					<li>
+						<a href="">
+							<i class="icon-fixed-width icon-calendar"></i>
 							일정
 						</a>
 					</li>
@@ -275,24 +299,6 @@
 						<a target="_blank" href="http://litmus.jbnu.ac.kr">리트머스 온라인 저지</a>
 					</li>
 				</ul>
-
-				<div class="sidebar-title">
-					<span>온라인 저지</span>
-				</div>
-
-				<ul class="sidebar-content">
-					<li>
-						<a target="_blank" href="http://cse.jbnu.ac.kr">알고스팟</a>
-					</li>
-					<li>
-						<a target="_blank" href="http://litmus.jbnu.ac.kr">백준 온라인 저지</a>
-					</li>
-					<li>
-						<a target="_blank" href="http://litmus.jbnu.ac.kr">UVa 온라인 저지</a>
-					</li>
-				</ul>
-
-
 
 			</div>
 			<div id="divider"></div>
