@@ -5,8 +5,8 @@ from pytest import fixture, yield_fixture
 
 from alps.app import app, initialize_app
 from alps.db import Base, get_engine, get_session
-from alps.post import Post
-from alps.user import User
+from alps.post import Board, Post
+from alps.user import MemberType, User
 
 
 def pytest_addoption(parser):
@@ -85,7 +85,9 @@ def fx_users(fx_session):
         nickname='그래',
         email='yes@alps.jbnu.ac.kr',
         name='장그래',
-        description='안녕하세요. 장그래입니다.'
+        description='안녕하세요. 장그래입니다.',
+        email_validated=True,
+        member_type=MemberType.non_member.value,
     )
     f.user_1.set_password('iamayesman')
 
@@ -94,6 +96,8 @@ def fx_users(fx_session):
         nickname='안녕',
         email='hi@alps.jbnu.ac.kr',
         name='안영이',
+        email_validated=True,
+        member_type=MemberType.member.value,
     )
     f.user_2.set_password('hellohello')
 
@@ -106,6 +110,8 @@ def fx_users(fx_session):
         is_jbnu_student=True,
         student_number='101512345',
         department='컴퓨터공학부',
+        email_validated=True,
+        member_type=MemberType.executive.value,
     )
     f.user_3.set_password('alpspassword')
 
@@ -115,23 +121,43 @@ def fx_users(fx_session):
 
 
 @fixture
-def fx_posts(fx_session, fx_users):
+def fx_boards(fx_session):
+    f = FixtureModule('fx_boards')
+
+    f.board_1 = Board(name='free', text='자유게시판')
+    f.board_2 = Board(name='member', text='회원게시판',
+                      read_permission=MemberType.member.value,
+                      write_permission=MemberType.member.value)
+    f.board_3 = Board(name='executive', text='임원게시판',
+                      read_permission=MemberType.executive.value,
+                      write_permission=MemberType.executive.value)
+
+    with fx_session.begin():
+        fx_session.add_all([f.board_1, f.board_2, f.board_3])
+    return f
+
+
+@fixture
+def fx_posts(fx_session, fx_boards, fx_users):
     f = FixtureModule('fx_posts')
 
     f.post_1 = Post(
         title='첫 게시글입니다.',
         content='안녕하세요. 테스트를 위한 글입니다.',
-        user=fx_users.user_1
+        user=fx_users.user_1,
+        board=fx_boards.board_1
     )
     f.post_2 = Post(
         title='안녕 세상아!',
         content='야호!',
-        user=fx_users.user_1
+        user=fx_users.user_2,
+        board=fx_boards.board_2
     )
     f.post_3 = Post(
         title='Hello, ALPS!',
         content='I just wanted to say hello',
-        user=fx_users.user_3
+        user=fx_users.user_3,
+        board=fx_boards.board_3
     )
 
     with fx_session.begin():
