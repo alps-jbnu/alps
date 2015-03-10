@@ -39,8 +39,15 @@ if [ $# -ge 2 ]; then
 	rm $TEMP_DUMP_FILE_1
 	rm $TEMP_DUMP_FILE_2
 	dropdb $TEMP_DB_NAME
+
+	# Check if the difference exists
+	if [ -s $2 ]; then
+		cat $2
+		exit 1
+	fi
 else
 	echo "Require two arguments."
 	echo "1) the name of a local PostgreSQL DB"
 	echo "2) the name of an output file"
+	exit 1
 fi

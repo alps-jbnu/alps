@@ -6,6 +6,7 @@ addons:
 before_install:
   - sudo apt-get update -qq
 install:
+  - sudo apt-get install apgdiff
   - "pip install -e .[tests]"
   - "pip install flake8 psycopg2"
 before_script:
@@ -15,6 +16,7 @@ before_script:
   - alps migration postgresql:///alembic_test "alembic downgrade 470e79f449a"
   - alps migration postgresql:///alembic_test "alembic upgrade head"
 script:
+  - ./check_migration.sh postgresql:///alembic_test diff.sql
   - hooks/pre-commit
   - py.test -vv --duration=20 --database-url='postgresql:///alps_test'
   - py.test -vv --duration=20
