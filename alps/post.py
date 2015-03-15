@@ -20,6 +20,10 @@ class Board(Base):
                               default=MemberType.non_member.value,
                               server_default='0')
 
+    posts = relationship('Post',
+                         cascade='all, delete-orphan',
+                         lazy='dynamic')
+
     created_at = Column(DateTime(timezone=True), nullable=False,
                         default=now())
 
