@@ -85,7 +85,11 @@ def list_board_with_page(board_name, page):
         abort(404)
 
     post_cnt = board.posts.count()
-    if page < 1 or post_cnt / MAX_POSTS_PER_PAGE > page:
+    max_page = post_cnt // MAX_POSTS_PER_PAGE
+    if (max_page == 0) or (post_cnt % MAX_POSTS_PER_PAGE > 0):
+        max_page += 1
+
+    if (page < 1) or (page > max_page):
         abort(404)
 
     posts = board.posts.order_by(Post.created_at) \
