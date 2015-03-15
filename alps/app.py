@@ -13,11 +13,11 @@ from alps.config import read_config
 from alps.db import session, setup_session
 from alps.forms import login_error_msg, SignInForm, SignUpForm
 from alps.model import import_all_modules
-from alps.post import Board
+from alps.post import Board, Post
 from alps.user import User
 
 
-__all__ = 'app', 'initialize_app', 'login_manager'
+__all__ = 'app', 'initialize_app', 'login_manager', 'MAX_POSTS_PER_PAGE'
 
 import_all_modules()
 
@@ -27,6 +27,8 @@ setup_session(app)
 login_manager = LoginManager()
 csrf_protect = CsrfProtect()
 mail = Mail()
+
+MAX_POSTS_PER_PAGE = 20
 
 
 def initialize_app(app=None, config_dict=None):
@@ -73,11 +75,27 @@ def index():
 
 @app.route('/board/<board_name>')
 def list_board(board_name):
+    return list_board_with_page(board_name=board_name, page=1)
+
+
+@app.route('/board/<board_name>/<int:page>')
+def list_board_with_page(board_name, page):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
         abort(404)
 
-    return render_template('board.html', board=board)
+    post_cnt = board.posts.count()
+    if page < 1 or post_cnt / MAX_POSTS_PER_PAGE > page:
+        abort(404)
+
+    posts = board.posts.order_by(Post.created_at) \
+                       .limit(MAX_POSTS_PER_PAGE) \
+                       .offset(MAX_POSTS_PER_PAGE * (page-1)) \
+                       .all()
+
+    return render_template('board.html', title=board.text,
+                           writable=False, posts=posts,
+                           max_post_cnt=MAX_POSTS_PER_PAGE)
 
 
 @app.route('/login', methods=['GET', 'POST'])
