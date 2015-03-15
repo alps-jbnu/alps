@@ -2,8 +2,8 @@ import os
 import pathlib
 
 from flask import abort, Flask, redirect, render_template, request, url_for
-from flask.ext.login import (LoginManager, login_required, login_user,
-                             logout_user)
+from flask.ext.login import (current_user, LoginManager, login_required,
+                             login_user, logout_user)
 from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
 from raven.contrib.flask import Sentry
@@ -104,8 +104,13 @@ def list_board_with_page(board_name, page):
     has_left = True if start_page > 1 else False
     has_right = True if last_page < max_page else False
 
+    writable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type < board.write_permission:
+            writable = True
+
     return render_template('board.html', title=board.text,
-                           writable=True, posts=posts,
+                           writable=writable, posts=posts,
                            max_post_cnt=MAX_POSTS_PER_PAGE,
                            current_page=current_page,
                            start_page=start_page, end_page=last_page+1,
