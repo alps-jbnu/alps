@@ -13,6 +13,7 @@ from alps.config import read_config
 from alps.db import session, setup_session
 from alps.forms import login_error_msg, SignInForm, SignUpForm
 from alps.model import import_all_modules
+from alps.post import Board
 from alps.user import User
 
 
@@ -68,6 +69,15 @@ def load_user(username):
 @app.route('/')
 def index():
     return render_template('index.html', msg='Hello, ALPS!')
+
+
+@app.route('/board/<board_name>')
+def list_board(board_name):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    return render_template('board.html', board=board)
 
 
 @app.route('/login', methods=['GET', 'POST'])
