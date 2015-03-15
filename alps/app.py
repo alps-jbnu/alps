@@ -29,6 +29,7 @@ csrf_protect = CsrfProtect()
 mail = Mail()
 
 MAX_POSTS_PER_PAGE = 20
+PAGE_RANGE_LEN = 10
 
 
 def initialize_app(app=None, config_dict=None):
@@ -97,9 +98,19 @@ def list_board_with_page(board_name, page):
                        .offset(MAX_POSTS_PER_PAGE * (page-1)) \
                        .all()
 
+    current_page = page
+    start_page = page - ((page-1) % PAGE_RANGE_LEN)
+    last_page = min(start_page + PAGE_RANGE_LEN - 1, max_page)
+    has_left = True if start_page > 1 else False
+    has_right = True if last_page < max_page else False
+
     return render_template('board.html', title=board.text,
-                           writable=False, posts=posts,
-                           max_post_cnt=MAX_POSTS_PER_PAGE)
+                           writable=True, posts=posts,
+                           max_post_cnt=MAX_POSTS_PER_PAGE,
+                           current_page=current_page,
+                           start_page=start_page, end_page=last_page+1,
+                           has_left=has_left, has_right=has_right,
+                           name=board_name)
 
 
 @app.route('/login', methods=['GET', 'POST'])

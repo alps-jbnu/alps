@@ -6,8 +6,15 @@
 
 {% block container %}
 	<!--=== Page Header ===-->
-	<div class="page-title">
-		<h3> <strong>{{ title }}</strong></h3>
+	<div class="page-header">
+		<div class="page-title">
+			<h3> <strong>&nbsp;{{ title }}</strong></h3>
+		</div>
+		{% if writable %}
+		<div class="page-title" style="float: right">
+			<a href="" class="btn btn-primary" role="button">글쓰기</a>
+		</div>
+		{% endif %}
 	</div>
 	<!-- /Page Header -->
 
@@ -54,6 +61,51 @@
 				</div>
 			</div>
 			<!-- /Simple Table -->
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="widget">
+				<div class="widget-content align-center">
+					<ul class="pagination custom-page-margin">
+						{% if has_left %}
+							<li>
+								<a href="{{ url_for('list_board_with_page', board_name=name, page=start_page-1) }}">&larr; 이전</a>
+							</li>
+						{% else %}
+							<li class="disabled">
+								<a>&larr; 이전</a>
+							</li>
+						{% endif %}
+
+						{% for page_num in range(start_page, end_page) %}
+							{% if page_num == current_page %}
+								<li class="active">
+									<a href="{{ url_for('list_board_with_page', board_name=name, page=page_num) }}">
+										{{ page_num }}
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{ url_for('list_board_with_page', board_name=name, page=page_num) }}">
+										{{ page_num }}
+									</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+
+						{% if has_right %}
+							<li>
+								<a href="{{ url_for('list_board_with_page', board_name=name, page=end_page) }}">다음 &rarr;</a>
+							</li>
+						{% else %}
+							<li class="disabled">
+								<a>다음 &rarr;</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- /Page Content -->
