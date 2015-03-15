@@ -122,7 +122,7 @@ def login():
             return render_template('login.html', form=form,
                                    err_msg=login_error_msg)
         else:
-            login_user(load_user(form.username.data))
+            login_user(load_user(form.username.data), force=True)
             return redirect(request.form.get('next') or url_for('index'))
     elif request.method == 'GET':
         return render_template('login.html', form=form,
