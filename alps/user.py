@@ -25,26 +25,23 @@ class User(Base):
     nickname = Column(String(100), index=True, nullable=False, unique=True)
     email = Column(String(100), index=True, nullable=False, unique=True)
     pwhash = Column(String(100), nullable=False)
-    name = Column(String(100), index=True)
+    name = Column(String(100), index=True, nullable=False)
     description = Column(String(100))
-    is_jbnu_student = Column(Boolean, index=True, nullable=False,
-                             default=False, server_default='0')
-    student_number = Column(String(100), index=True)
-    department = Column(String(100), index=True)
+    is_jbnu_student = Column(Boolean, nullable=False, default=False)
+    student_number = Column(String(100))
+    department = Column(String(100))
 
-    email_validated = Column(Boolean, nullable=False,
-                             default=False, server_default='1')
+    email_validated = Column(Boolean, nullable=False, default=False)
     confirm_token = Column(String(100), index=True)
 
     member_type = Column(Integer, nullable=False,
-                         default=MemberType.non_member.value,
-                         server_default='0')
+                         default=MemberType.non_member.value)
 
     posts = relationship('Post',
                          cascade='all, delete-orphan',
                          lazy='dynamic')
 
-    created_at = Column(DateTime(timezone=True), nullable=False,
+    created_at = Column(DateTime(timezone=True), index=True, nullable=False,
                         default=now())
 
     def set_password(self, password):
