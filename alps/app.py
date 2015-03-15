@@ -106,7 +106,7 @@ def list_board_with_page(board_name, page):
 
     writable = False
     if current_user.is_authenticated() and current_user.is_active():
-        if current_user.member_type < board.write_permission:
+        if current_user.member_type >= board.write_permission:
             writable = True
 
     return render_template('board.html', title=board.text,
