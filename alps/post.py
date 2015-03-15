@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.sql.functions import now
@@ -43,5 +45,14 @@ class Post(Base):
 
     created_at = Column(DateTime(timezone=True), nullable=False,
                         default=now())
+
+    def format_created_at(self, now=None):
+        if now is None:
+            now = datetime.datetime.now()
+
+        if now.date() != self.created_at.date():
+            return self.created_at.date().strftime('%Y.%m.%d')
+        else:
+            return self.created_at.time().strftime('%H:%M')
 
     __tablename__ = 'posts'
