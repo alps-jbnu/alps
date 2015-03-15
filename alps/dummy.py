@@ -3,7 +3,7 @@ import random
 from alps.db import session
 from alps.fixture import insert_initial_data
 from alps.model import import_all_modules
-from alps.user import User
+from alps.user import MemberType, User
 from alps.post import Board, Post
 
 __all__ = 'insert_dummy_data',
@@ -14,6 +14,83 @@ def insert_dummy_data(app):
     insert_initial_data(app)
 
     with app.app_context():
+
+        # 테스트 비활성 계정
+        alps_tester_0 = session.query(User) \
+                               .filter_by(username='alps_tester_0') \
+                               .first()
+        if not alps_tester_0:
+            alps_tester_0 = User(
+                username='alps_tester_0',
+                nickname='테스터 0',
+                email='alps_tester_0@alps.jbnu.ac.kr',
+                name='알프스',
+                email_validated=False,
+                member_type=MemberType.non_member.value,
+            )
+            alps_tester_0.set_password('12345678')
+            with session.begin():
+                session.add(alps_tester_0)
+            print('alps_tester_0 계정이 생성되었습니다. '
+                  '비밀번호를 변경해주세요! (초기 비밀번호: 12345678)')
+
+        # 테스트 비동아리원 계정
+        alps_tester_1 = session.query(User) \
+                               .filter_by(username='alps_tester_1') \
+                               .first()
+        if not alps_tester_1:
+            alps_tester_1 = User(
+                username='alps_tester_1',
+                nickname='테스터 1',
+                email='alps_tester_1@alps.jbnu.ac.kr',
+                name='알프스',
+                email_validated=True,
+                member_type=MemberType.non_member.value,
+            )
+            alps_tester_1.set_password('12345678')
+            with session.begin():
+                session.add(alps_tester_1)
+            print('alps_tester_1 계정이 생성되었습니다. '
+                  '비밀번호를 변경해주세요! (초기 비밀번호: 12345678)')
+
+        # 테스트 동아리원 계정
+        alps_tester_2 = session.query(User) \
+                               .filter_by(username='alps_tester_2') \
+                               .first()
+        if not alps_tester_2:
+            alps_tester_2 = User(
+                username='alps_tester_2',
+                nickname='테스터 2',
+                email='alps_tester_2@alps.jbnu.ac.kr',
+                name='알프스',
+                email_validated=True,
+                member_type=MemberType.member.value,
+            )
+            alps_tester_2.set_password('12345678')
+            with session.begin():
+                session.add(alps_tester_2)
+            print('alps_tester_2 계정이 생성되었습니다. '
+                  '비밀번호를 변경해주세요! (초기 비밀번호: 12345678)')
+
+        # 테스트 동아리 임원 계정
+        alps_tester_3 = session.query(User) \
+                               .filter_by(username='alps_tester_3') \
+                               .first()
+        if not alps_tester_3:
+            alps_tester_3 = User(
+                username='alps_tester_3',
+                nickname='테스터 3',
+                email='alps_tester_3@alps.jbnu.ac.kr',
+                name='알프스',
+                email_validated=True,
+                member_type=MemberType.executive.value,
+            )
+            alps_tester_3.set_password('12345678')
+            with session.begin():
+                session.add(alps_tester_3)
+            print('alps_tester_3 계정이 생성되었습니다. '
+                  '비밀번호를 변경해주세요! (초기 비밀번호: 12345678)')
+
         admin_user = session.query(User) \
                             .filter_by(username='admin') \
                             .first()
