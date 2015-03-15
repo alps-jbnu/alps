@@ -6,7 +6,7 @@ from sqlalchemy.types import DateTime, Integer, String, Text
 from alps.db import Base
 from alps.user import MemberType, User
 
-__all__ = 'Post',
+__all__ = 'Board', 'Post'
 
 
 class Board(Base):
