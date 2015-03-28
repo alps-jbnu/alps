@@ -40,27 +40,35 @@
 		<div class="col-md-12">
 			<div class="widget box">
 				<div class="widget-header">
-					<h4><i class="icon-pencil"></i> 회원가입</h4>
+					<h4><i class="icon-pencil"></i> 글 쓰기 - 자유게시판</h4>
 				</div>
 				<div class="widget-content">
 					<form class="form-horizontal row-border" action="{{ url_for('register') }}" method="POST">
 						<!-- Input Fields -->
 						<div class="form-group">
-							<label class="col-md-3 control-label">
-								필드 레이블 텍스트
+							<label class="col-md-2 control-label">
+								제목
 							</label>
-							<div class="col-md-9">
-								<input type="text" name="xxx" class="form-control">
+							<div class="col-md-10">
+								<input type="text" name="title" class="form-control">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-3 control-label">
-								필드 레이블 텍스트 2
+							<label class="col-md-2 control-label">
+								내용
 							</label>
-							<div class="col-md-9">
-								<input type="text" name="xxx" class="form-control">
+							<div class="col-md-10 hidden">
+								<input type="text" name="context" class="form-control">
 							</div>
+							<div class="col-md-10">
+								<div id="editor" class="editor"></div>
+							    <script src="{{ url_for('static', filename='ace-builds/src-min-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
+							    <script>
+							        var editor = ace.edit('editor');
+							        editor.getSession().setMode('ace/mode/markdown').Mode;
+							    </script>
+						    </div>
 						</div>
 
 						<div class="form-actions">
