@@ -27,6 +27,16 @@
 <script src="{{ url_for('static', filename='theme/Template/assets/js/app.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='theme/Template/assets/js/plugins.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='theme/Template/assets/js/plugins.form-components.js') }}" type="text/javascript"></script>
+
+<script>
+$(document).ready(function(){
+	"use strict";
+
+	App.init(); // Init layout and core plugins
+	Plugins.init(); // Init all plugins
+	Register.init(); // Init register JavaScript
+});
+</script>
 {% endblock %}
 
 {% block container %}
