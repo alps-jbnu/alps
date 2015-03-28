@@ -21,10 +21,11 @@ def main():
 
 
 @main.command()
+@option('--host', '-h', type=str)
 @option('--debug', '-d', is_flag=True)
 @option('--port', '-p', type=int)
 @option('--config', '-c', type=Path(exists=True))
-def runserver(debug, port, config):
+def runserver(host, debug, port, config):
     """Run ALPS server"""
 
     if config:
@@ -32,7 +33,7 @@ def runserver(debug, port, config):
         initialize_app(app=app, config_dict=config_dict)
     else:
         print('Running server without specifying config file in options...')
-    app.run(debug=debug, port=port)
+    app.run(debug=debug, port=port, host=host)
 
 
 @main.command()
