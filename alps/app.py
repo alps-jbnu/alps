@@ -118,6 +118,11 @@ def list_board_with_page(board_name, page):
                            name=board_name)
 
 
+@app.route('/board/<board_name>/write')
+def write_post(board_name):
+    return render_template('write_post.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = SignInForm()
