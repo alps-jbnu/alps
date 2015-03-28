@@ -120,6 +120,17 @@ def list_board_with_page(board_name, page):
 
 @app.route('/board/<board_name>/write')
 def write_post(board_name):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writable = True
+    if not writable:
+        abort(404)
+
     return render_template('write_post.html')
 
 
