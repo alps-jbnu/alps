@@ -28,6 +28,7 @@ __all__ = (
     'SignUpForm',
     'student_number_char_msg',
     'student_number_len_msg',
+    'WritingPostForm',
 )
 
 
@@ -205,3 +206,8 @@ class SignUpForm(Form):
                                validators=[student_number_char_validator,
                                            student_number_len_validator])
     department = TextField(label='학부(과)', validators=[dept_len_validator])
+
+
+class WritingPostForm(Form):
+    title = TextField(label='제목')
+    content = TextAreaField(labe='내용')
