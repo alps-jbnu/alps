@@ -1,48 +1,48 @@
 {% macro render_login_field(field) %}
 <div class="form-group{% if field.errors %} has-error{% endif %}">
-  <div class="input-icon">
-    <i class="icon-user"></i>
-    {% if field.errors %}
-      {% set field_class = 'form-control has-error'%}
-    {% else %}
-      {% set field_class = 'form-control'%}
-    {% endif %}
+	<div class="input-icon">
+		<i class="icon-user"></i>
+		{% if field.errors %}
+			{% set field_class = 'form-control has-error'%}
+		{% else %}
+			{% set field_class = 'form-control'%}
+		{% endif %}
 
-    {{ field(class=field_class, autofocus='autofocus', placeholder=field.label.text, **kwargs)|safe }}
+		{{ field(class=field_class, autofocus='autofocus', placeholder=field.label.text, **kwargs)|safe }}
 
-    {% for msg in field.errors %}
-      <label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
-    {% endfor %}
-  </div>
+		{% for msg in field.errors %}
+			<label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
+		{% endfor %}
+	</div>
 </div>
 {% endmacro %}
 
 {% macro render_register_field(field, jbnu_attr=False) %}
 <div class="form-group{% if field.errors %} has-error{% endif %}{% if jbnu_attr %} jbnu{% endif %}">
-  <label class="col-md-3 control-label">
-    {{ field.label.text }}
-    {% if field.flags.required %}
-      <span class="required">*</span>
-    {% endif %}
-  </label>
-  <div class="col-md-9">
-    {% if field.errors %}
-      {% set field_class = 'form-control has-error'%}
-    {% else %}
-      {% set field_class = 'form-control '%}
-    {% endif %}
+	<label class="col-md-3 control-label">
+		{{ field.label.text }}
+		{% if field.flags.required %}
+			<span class="required">*</span>
+		{% endif %}
+	</label>
+	<div class="col-md-9">
+		{% if field.errors %}
+			{% set field_class = 'form-control has-error'%}
+		{% else %}
+			{% set field_class = 'form-control '%}
+		{% endif %}
 
-    {% if field.type == 'BooleanField' %}
-      <label class="checkbox">
-        {{ field(class='uniform', **kwargs)|safe }}
-      </label>
-    {% else %}
-      {{ field(class=field_class, **kwargs)|safe }}
-    {% endif %}
+		{% if field.type == 'BooleanField' %}
+			<label class="checkbox">
+				{{ field(class='uniform', **kwargs)|safe }}
+			</label>
+		{% else %}
+			{{ field(class=field_class, **kwargs)|safe }}
+		{% endif %}
 
-    {% for msg in field.errors %}
-      <label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
-    {% endfor %}
-  </div>
+		{% for msg in field.errors %}
+			<label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
+		{% endfor %}
+	</div>
 </div>
 {% endmacro %}
