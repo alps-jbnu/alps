@@ -46,3 +46,20 @@
 	</div>
 </div>
 {% endmacro %}
+
+{% macro render_write_field(field, hidden=False) %}
+<div class="form-group{% if hidden %} hidden{% endif %}">
+	<label class="col-md-2 control-label">
+		{{ field.label.text }}
+	</label>
+	<div class="col-md-10">
+		{% if field.errors %}
+			{% set field_class = 'form-control has-error'%}
+		{% else %}
+			{% set field_class = 'form-control '%}
+		{% endif %}
+
+		{{ field(class=field_class, **kwargs)|safe }}
+	</div>
+</div>
+{% endmacro %}

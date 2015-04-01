@@ -1,3 +1,5 @@
+{% from "_form_helpers.html" import render_write_field %}
+
 {% extends "layout.html" %}
 
 {% block title %}
@@ -55,22 +57,12 @@ $(document).ready(function(){
 				<div class="widget-content">
 					<form class="form-horizontal row-border" action="{{ url_for('register') }}" method="POST">
 						<!-- Input Fields -->
-						<div class="form-group">
-							<label class="col-md-2 control-label">
-								제목
-							</label>
-							<div class="col-md-10">
-								<input type="text" name="title" class="form-control">
-							</div>
-						</div>
-
+						{{ render_write_field(field=form.title) }}
+                        {{ render_write_field(field=form.content, hidden=True) }}
 						<div class="form-group">
 							<label class="col-md-2 control-label">
 								내용
 							</label>
-							<div class="col-md-10 hidden">
-								<input type="text" name="context" class="form-control">
-							</div>
 							<div class="col-md-10">
 								<div id="editor" class="editor"></div>
 							    <script src="{{ url_for('static', filename='ace-builds/src-min-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
