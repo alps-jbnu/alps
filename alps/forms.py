@@ -210,4 +210,4 @@ class SignUpForm(Form):
 
 class WritingPostForm(Form):
     title = TextField(label='제목')
-    content = TextAreaField(labe='내용')
+    content = TextAreaField(label='내용')
