@@ -11,7 +11,8 @@ from raven.contrib.flask import Sentry
 from alps import ayah
 from alps.config import read_config
 from alps.db import session, setup_session
-from alps.forms import login_error_msg, SignInForm, SignUpForm
+from alps.forms import (login_error_msg, SignInForm, SignUpForm,
+                        WritingPostForm)
 from alps.model import import_all_modules
 from alps.post import Board, Post
 from alps.user import User
@@ -118,7 +119,7 @@ def list_board_with_page(board_name, page):
                            name=board_name)
 
 
-@app.route('/board/<board_name>/write')
+@app.route('/board/<board_name>/write', methods=['GET', 'POST'])
 def write_post(board_name):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
@@ -131,7 +132,13 @@ def write_post(board_name):
     if not writable:
         abort(404)
 
-    return render_template('write_post.html')
+    form = WritingPostForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('write_post.html', form=form)
+    elif request.method == 'GET':
+        return render_template('write_post.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
