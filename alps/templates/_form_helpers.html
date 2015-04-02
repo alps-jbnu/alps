@@ -53,13 +53,11 @@
 		{{ field.label.text }}
 	</label>
 	<div class="col-md-10">
-		{% if field.errors %}
-			{% set field_class = 'form-control has-error'%}
+		{% if field.name == 'content' %}
+			{{ field(class='form-control', id='post_content', **kwargs)|safe }}
 		{% else %}
-			{% set field_class = 'form-control '%}
+			{{ field(class='form-control', **kwargs)|safe }}
 		{% endif %}
-
-		{{ field(class=field_class, **kwargs)|safe }}
 	</div>
 </div>
 {% endmacro %}
