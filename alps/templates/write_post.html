@@ -30,13 +30,16 @@
 <script src="{{ url_for('static', filename='theme/Template/assets/js/plugins.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='theme/Template/assets/js/plugins.form-components.js') }}" type="text/javascript"></script>
 
+<!-- Ace Editor -->
+<script src="{{ url_for('static', filename='ace-builds/src-min-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ url_for('static', filename='theme/Template/assets/js/write.js') }}" type="text/javascript"></script>
+
 <script>
-$(document).ready(function(){
+$(document).ready(function() {
 	"use strict";
 
 	App.init(); // Init layout and core plugins
 	Plugins.init(); // Init all plugins
-	Register.init(); // Init register JavaScript
 });
 </script>
 {% endblock %}
@@ -55,24 +58,24 @@ $(document).ready(function(){
 					<h4><i class="icon-pencil"></i> 글 쓰기 - 자유게시판</h4>
 				</div>
 				<div class="widget-content">
-					<form class="form-horizontal row-border" action="{{ url_for('register') }}" method="POST">
+					<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('write_post', board_name=name) }}" method="POST">
 						<!-- Input Fields -->
 						{{ render_write_field(field=form.title) }}
-                        {{ render_write_field(field=form.content, hidden=True) }}
-						<div class="form-group">
+						{{ render_write_field(field=form.content, id='post_content', hidden=True) }}
+						<div id="edit-form" class="form-group">
 							<label class="col-md-2 control-label">
 								내용
 							</label>
 							<div class="col-md-10">
 								<div id="editor" class="editor"></div>
-							    <script src="{{ url_for('static', filename='ace-builds/src-min-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
-							    <script>
-							        var editor = ace.edit('editor');
-							        editor.getSession().setMode('ace/mode/markdown').Mode;
-							    </script>
-						    </div>
+							</div>
 						</div>
-
+						<script>
+							var editor = ace.edit('editor');
+							editor.getSession().setMode('ace/mode/markdown');
+							WritingPost.init(editor); // Add OnSubmit handler for ACE Editor
+						</script>
+						{{ form.csrf_token }}
 						<div class="form-actions">
 							<input value="확인" class="btn btn-primary pull-right" type="submit">
 						</div>

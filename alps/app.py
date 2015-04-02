@@ -136,9 +136,10 @@ def write_post(board_name):
 
     if request.method == 'POST':
         if not form.validate():
-            return render_template('write_post.html', form=form)
+            return render_template('write_post.html', name=board_name,
+                                   form=form)
     elif request.method == 'GET':
-        return render_template('write_post.html', form=form)
+        return render_template('write_post.html', name=board_name, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
