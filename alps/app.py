@@ -138,6 +138,8 @@ def write_post(board_name):
         if not form.validate():
             return render_template('write_post.html', name=board_name,
                                    form=form)
+        else:
+            return redirect(url_for('list_board', board_name=board_name))
     elif request.method == 'GET':
         return render_template('write_post.html', name=board_name, form=form)
 
