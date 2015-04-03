@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	글 쓰기 | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+	글 쓰기 - {{ title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
 {% endblock %}
 
 {% block head %}
@@ -55,7 +55,7 @@ $(document).ready(function() {
 		<div class="col-md-12">
 			<div class="widget box">
 				<div class="widget-header">
-					<h4><i class="icon-pencil"></i> 글 쓰기 - 자유게시판</h4>
+					<h4><i class="icon-pencil"></i> 글 쓰기 - {{ text }}</h4>
 				</div>
 				<div class="widget-content">
 					<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('write_post', board_name=name) }}" method="POST">

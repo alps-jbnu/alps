@@ -48,16 +48,26 @@
 {% endmacro %}
 
 {% macro render_write_field(field, hidden=False) %}
-<div class="form-group{% if hidden %} hidden{% endif %}">
+<div class="form-group{% if hidden %} hidden{% endif %}{% if field.errors %} has-error{% endif %}">
 	<label class="col-md-2 control-label">
 		{{ field.label.text }}
 	</label>
 	<div class="col-md-10">
-		{% if field.name == 'content' %}
-			{{ field(class='form-control', id='post_content', **kwargs)|safe }}
+		{% if field.errors %}
+			{% set field_class = 'form-control has-error'%}
 		{% else %}
-			{{ field(class='form-control', **kwargs)|safe }}
+			{% set field_class = 'form-control '%}
 		{% endif %}
+
+		{% if field.name == 'content' %}
+			{{ field(class=field_class, id='post_content', **kwargs)|safe }}
+		{% else %}
+			{{ field(class=field_class, **kwargs)|safe }}
+		{% endif %}
+
+		{% for msg in field.errors %}
+			<label for="{{ field.name }}" generated="true" class="has-error help-block">{{ msg }}</label>
+		{% endfor %}
 	</div>
 </div>
 {% endmacro %}

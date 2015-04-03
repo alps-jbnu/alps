@@ -137,7 +137,7 @@ def write_post(board_name):
     if request.method == 'POST':
         if not form.validate():
             return render_template('write_post.html', name=board_name,
-                                   form=form)
+                                   text=board.text, form=form)
         else:
             post = Post(board=board, user=current_user,
                         title=form.title.data, content=form.content.data)
@@ -145,7 +145,8 @@ def write_post(board_name):
                 session.add(post)
             return redirect(url_for('list_board', board_name=board_name))
     elif request.method == 'GET':
-        return render_template('write_post.html', name=board_name, form=form)
+        return render_template('write_post.html', name=board_name,
+                               text=board.text, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
