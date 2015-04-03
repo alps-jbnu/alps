@@ -1,3 +1,5 @@
+from flask import url_for
+
 from alps.post import Board, Post
 
 
@@ -22,3 +24,32 @@ def test_board_has_posts(fx_session, fx_boards, fx_posts):
                            .filter_by(board=fx_boards.free_board) \
                            .all()
     assert len(free_posts) == 2
+
+
+def test_board_permission(fx_session, fx_request_context, fx_users,
+                          fx_boards, fx_flask_client):
+    # user_2로 로그인한다. (권한: 회원)
+    username = 'hihi'
+    password = 'hellohello'
+    fx_flask_client.post(url_for('login'),
+                         data=dict(username=username,
+                                   password=password),
+                         follow_redirects=True)
+
+    # 자유게시판에 글쓰기한다.
+    response = fx_flask_client.get(
+        url_for('write_post', board_name=fx_boards.free_board.name)
+    ).data.decode(encoding='utf-8')
+    assert '404' not in response
+
+    # 회원게시판에 글쓰기한다.
+    response = fx_flask_client.get(
+        url_for('write_post', board_name=fx_boards.member_board.name)
+    ).data.decode(encoding='utf-8')
+    assert '404' not in response
+
+    # 임원게시판에 글쓰기한다.
+    response = fx_flask_client.get(
+        url_for('write_post', board_name=fx_boards.executive_board.name)
+    ).data.decode(encoding='utf-8')
+    assert '404' in response
