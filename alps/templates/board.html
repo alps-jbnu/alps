@@ -41,9 +41,9 @@
 								<td>{{ post.id }}</td>
 								<td>{{ post.title }}</td>
 								<td>{{ post.user.nickname }}</td>
-								<td>0</td>
+								<td>0</td> {# TODO: Enable comments on a post #}
 								<td>{{ post.format_created_at() }}</td>
-								<td>0000.00.00</td>
+								<td>{{ post.format_created_at() }}</td> {# TODO: Add modified_at column to posts table #}
 							</tr>
 							{% endfor %}
 							{% for i in range(max_post_cnt - posts|length) %}
