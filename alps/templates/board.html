@@ -39,7 +39,11 @@
 							{% for post in posts %}
 							<tr>
 								<td>{{ post.id }}</td>
-								<td><a href="{{ url_for('view_post', board_name=name, post_id=post.id) }}">{{ post.title }}</a></td>
+								{% if readable %}
+									<td><a href="{{ url_for('view_post', board_name=name, post_id=post.id) }}">{{ post.title }}</a></td>
+								{% else %}
+									<td>{{ post.title }}</td>
+								{% endif %}
 								<td>{{ post.user.nickname }}</td>
 								<td>0</td> {# TODO: Enable comments on a post #}
 								<td>{{ post.format_created_at() }}</td>

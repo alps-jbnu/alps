@@ -110,8 +110,13 @@ def list_board_with_page(board_name, page):
         if current_user.member_type >= board.write_permission:
             writable = True
 
+    readable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.read_permission:
+            readable = True
+
     return render_template('board.html', title=board.text,
-                           writable=writable, posts=posts,
+                           writable=writable, readable=readable, posts=posts,
                            max_post_cnt=MAX_POSTS_PER_PAGE,
                            current_page=current_page,
                            start_page=start_page, end_page=last_page+1,
@@ -153,6 +158,13 @@ def write_post(board_name):
 def view_post(board_name, post_id):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
+        abort(404)
+
+    readable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.read_permission:
+            readable = True
+    if not readable:
         abort(404)
 
     post = session.query(Post).filter_by(id=post_id).first()
