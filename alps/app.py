@@ -149,6 +149,20 @@ def write_post(board_name):
                                text=board.text, form=form)
 
 
+@app.route('/board/<board_name>/post/<int:post_id>')
+def view_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    post = session.query(Post).filter_by(id=post_id).first()
+    if not post:
+        abort(404)
+
+    return render_template('view_post.html', board_title=board.text,
+                           post_title=post.title, post_content=post.content)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = SignInForm()

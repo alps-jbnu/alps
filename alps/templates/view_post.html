@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{ board_title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+{% endblock %}
+
+{% block container %}
+	<!--=== Page Header ===-->
+	<div class="empty-page-header"></div>
+	<!--=== /Page Header ===-->
+
+	<!--=== Page Content ===-->
+	<div class="row">
+		<div class="widget box">
+			<div class="widget-header">
+				<h4><i class="icon-edit"></i> {{ board_title }}</h4>
+			</div>
+			<div class="widget-content">
+				<h2 class="widget-content-title">{{ post_title }}</h2>
+				<div class="post-content">{{ post_content }}</div>
+			</div>
+		</div>
+	</div>
+	<!--=== /Page Content ===-->
+{% endblock %}
