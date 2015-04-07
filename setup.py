@@ -21,6 +21,7 @@ install_requires = {
     'Flask-Mail >= 0.9.1',
     'Flask-WTF >= 0.11',
     'lxml >= 3.4.1',
+    'markdown >= 2.6.1',
     'PyYAML >= 3.11',
     'raven >= 5.2.0',
     'SQLAlchemy >= 0.9.8',

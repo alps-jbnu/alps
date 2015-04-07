@@ -6,6 +6,7 @@ from flask.ext.login import (current_user, LoginManager, login_required,
                              login_user, logout_user)
 from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
+from markdown import markdown
 from raven.contrib.flask import Sentry
 
 from alps import ayah
@@ -171,8 +172,10 @@ def view_post(board_name, post_id):
     if not post:
         abort(404)
 
+    html = markdown(post.content, extensions=['markdown.extensions.nl2br'])
+
     return render_template('view_post.html', board_title=board.text,
-                           post_title=post.title, post_content=post.content)
+                           post_title=post.title, post_content=html)
 
 
 @app.route('/login', methods=['GET', 'POST'])
