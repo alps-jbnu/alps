@@ -92,3 +92,7 @@
 pre code {
 	border-style: none;
 }
+
+.post-content {
+	min-height: 100px;
+}
