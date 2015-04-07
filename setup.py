@@ -15,6 +15,7 @@ def readme():
 # Don't miss a comma in the last line.
 install_requires = {
     'alembic >= 0.7.4',
+    'bleach >= 1.4.1',
     'click >= 3.3',
     'Flask >= 0.10.1',
     'Flask-Login >= 0.2.11',

@@ -1,6 +1,7 @@
 import os
 import pathlib
 
+from bleach import clean
 from flask import abort, Flask, redirect, render_template, request, url_for
 from flask.ext.login import (current_user, LoginManager, login_required,
                              login_user, logout_user)
@@ -32,6 +33,13 @@ mail = Mail()
 
 MAX_POSTS_PER_PAGE = 20
 PAGE_RANGE_LEN = 10
+
+ALLOWED_TAGS = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i',
+                'li', 'ol', 'strong', 'ul', 'img', 'p', 'h1', 'h2', 'h3',
+                'h4', 'h5', 'h6', 'br', 'pre', 'table', 'thead', 'tbody',
+                'tr', 'th', 'td']
+ALLOWED_ATTRIBUTES = {'abbr': ['title'], 'a': ['href', 'title'],
+                      'acronym': ['title'], 'img': ['alt', 'src']}
 
 
 def initialize_app(app=None, config_dict=None):
@@ -172,7 +180,11 @@ def view_post(board_name, post_id):
     if not post:
         abort(404)
 
-    html = markdown(post.content, extensions=['markdown.extensions.nl2br'])
+    html = markdown(post.content,
+                    extensions=['markdown.extensions.nl2br',
+                                'markdown.extensions.fenced_code',
+                                'markdown.extensions.tables'])
+    html = clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
 
     return render_template('view_post.html', board_title=board.text,
                            post_title=post.title, post_content=html)
