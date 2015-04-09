@@ -180,14 +180,24 @@ def view_post(board_name, post_id):
     if not post:
         abort(404)
 
+    next_post = session.query(Post) \
+                       .filter(Post.id > post_id, Post.board_id == board.id) \
+                       .order_by(Post.id.asc()) \
+                       .first()
+    prev_post = session.query(Post) \
+                       .filter(Post.id < post_id, Post.board_id == board.id) \
+                       .order_by(Post.id.desc()) \
+                       .first()
+
     html = markdown(post.content,
                     extensions=['markdown.extensions.nl2br',
                                 'markdown.extensions.fenced_code',
                                 'markdown.extensions.tables'])
     html = clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
 
-    return render_template('view_post.html', board_title=board.text,
-                           post_title=post.title, post_content=html)
+    return render_template('view_post.html', board=board, post=post,
+                           content=html, next_post=next_post,
+                           prev_post=prev_post)
 
 
 @app.route('/login', methods=['GET', 'POST'])

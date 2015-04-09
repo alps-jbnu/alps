@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	{{ board_title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+	{{ board.text }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
 {% endblock %}
 
 {% block container %}
@@ -14,11 +14,19 @@
 		<div class="col-md-12">
 			<div class="widget box">
 				<div class="widget-header">
-					<h4><i class="icon-edit"></i> {{ board_title }}</h4>
+					<h4><i class="icon-edit"></i> {{ board.text }}</h4>
 				</div>
 				<div class="widget-content">
-					<h2 class="widget-content-title">{{ post_title }}</h2>
-					<div class="post-content">{{ post_content|safe }}</div>
+					<h2 class="widget-content-title">{{ post.title }}</h2>
+					<div class="post-content">{{ content|safe }}</div>
+					<div class="post-footer">
+						{% if prev_post is not none %}
+							<a class="post-footer-link" href="{{ url_for('view_post', board_name=board.name, post_id=prev_post.id) }}">이전 글 - {{ prev_post.title }}</a>
+						{% endif %}
+						{% if next_post is not none %}
+							<a class="post-footer-link" href="{{ url_for('view_post', board_name=board.name, post_id=next_post.id) }}">다음 글 - {{ next_post.title }}</a>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
