@@ -176,7 +176,7 @@ def view_post(board_name, post_id):
     if not readable:
         abort(404)
 
-    post = session.query(Post).filter_by(id=post_id).first()
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
     if not post:
         abort(404)
 
