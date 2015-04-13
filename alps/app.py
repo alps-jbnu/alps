@@ -195,9 +195,14 @@ def view_post(board_name, post_id):
                                 'markdown.extensions.tables'])
     html = clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
 
+    post_cnt = session.query(Post) \
+                      .filter(Post.id > post_id, Post.board_id == board.id) \
+                      .count()
+    page = post_cnt // MAX_POSTS_PER_PAGE + 1
+
     return render_template('view_post.html', board=board, post=post,
                            content=html, next_post=next_post,
-                           prev_post=prev_post)
+                           prev_post=prev_post, post_page=page)
 
 
 @app.route('/login', methods=['GET', 'POST'])

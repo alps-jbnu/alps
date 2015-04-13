@@ -15,6 +15,13 @@
 			<div class="widget box">
 				<div class="widget-header">
 					<h4><i class="icon-edit"></i> {{ board.text }}</h4>
+					<div class="toolbar no-padding">
+						<div class="btn-group">
+							<a href="{{ url_for('list_board_with_page', board_name=board.name, page=post_page) }}" class="btn btn-xs">
+								<i class="icon-reorder"></i> 목록
+							</a>
+						</div>
+					</div>
 				</div>
 				<div class="widget-content">
 					<h2 class="widget-content-title">{{ post.title }}</h2>
