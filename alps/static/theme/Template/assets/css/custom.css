@@ -114,3 +114,17 @@ pre code {
 .post-footer .post-footer-link:first-child {
 	border-top: 0px none;
 }
+
+.post-header {
+	margin-bottom: 20px;
+	text-align: right;
+}
+
+.post-header span {
+	color: #555;
+	margin-right: 5px;
+}
+
+.post-header span:last-child {
+	margin-right: 0px;
+}

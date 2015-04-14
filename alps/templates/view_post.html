@@ -25,6 +25,10 @@
 				</div>
 				<div class="widget-content">
 					<h2 class="widget-content-title">{{ post.title }}</h2>
+					<div class="post-header">
+						<span>작성자: <a href="#">{{ post.user.nickname }}</a></span>
+						<span>작성일: {{ post.format_created_at() }}</span>
+					</div>
 					<div class="post-content">{{ content|safe }}</div>
 					<div class="post-footer">
 						{% if prev_post is not none %}
