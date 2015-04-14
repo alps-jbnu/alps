@@ -17,6 +17,9 @@
 					<h4><i class="icon-edit"></i> {{ board.text }}</h4>
 					<div class="toolbar no-padding">
 						<div class="btn-group">
+							<a href="{{ url_for('edit_post', board_name=board.name, post_id=post.id) }}" class="btn btn-xs">
+								<i class="icon-pencil"></i> 수정
+							</a>
 							<a href="{{ url_for('list_board_with_page', board_name=board.name, page=post_page) }}" class="btn btn-xs">
 								<i class="icon-reorder"></i> 목록
 							</a>

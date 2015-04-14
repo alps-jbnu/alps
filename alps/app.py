@@ -205,6 +205,43 @@ def view_post(board_name, post_id):
                            prev_post=prev_post, post_page=page)
 
 
+@app.route('/board/<board_name>/post/edit/<int:post_id>',
+           methods=['GET', 'POST'])
+def edit_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writeable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writeable = True
+    if not writeable:
+        abort(404)
+
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
+    if not post:
+        abort(404)
+
+    form = WritingPostForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('edit_post.html', name=board_name,
+                                   text=board.text, form=form, post=post)
+        else:
+            with session.begin():
+                post.title = form.title.data
+                post.content = form.content.data
+            return redirect(url_for('view_post', board_name=board_name,
+                                    post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+        return render_template('edit_post.html', name=board_name,
+                               text=board.text, form=form, post=post)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = SignInForm()
