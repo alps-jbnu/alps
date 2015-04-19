@@ -3,7 +3,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	글 수정 - {{ title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+	{% if mode == 'new' %}
+		글 쓰기 - {{ title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+	{% elif mode == 'edit' %}
+		글 수정 - {{ title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+	{% endif %}
 {% endblock %}
 
 {% block head %}
@@ -55,10 +59,21 @@ $(document).ready(function() {
 		<div class="col-md-12">
 			<div class="widget box">
 				<div class="widget-header">
-					<h4><i class="icon-pencil"></i> 글 수정 - {{ text }}</h4>
+					<h4>
+						<i class="icon-pencil"></i>
+						{% if mode == 'new' %}
+							 글 쓰기 - {{ text }}
+						{% elif mode == 'edit' %}
+							 글 수정 - {{ text }}
+						{% endif %}
+					</h4>
 				</div>
 				<div class="widget-content">
-					<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('edit_post', board_name=name, post_id=post.id) }}" method="POST">
+					{% if mode == 'new' %}
+						<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('new_post', board_name=name) }}" method="POST">
+					{% elif mode == 'edit' %}
+						<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('edit_post', board_name=name, post_id=post.id) }}" method="POST">
+					{% endif %}
 						<!-- Input Fields -->
 						{{ render_write_field(field=form.title) }}
 						{{ render_write_field(field=form.content, id='post_content', hidden=True) }}

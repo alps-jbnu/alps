@@ -151,8 +151,8 @@ def new_post(board_name):
 
     if request.method == 'POST':
         if not form.validate():
-            return render_template('write_post.html', name=board_name,
-                                   text=board.text, form=form)
+            return render_template('edit_post.html', name=board_name,
+                                   text=board.text, form=form, mode='new')
         else:
             post = Post(board=board, user=current_user,
                         title=form.title.data, content=form.content.data)
@@ -160,8 +160,8 @@ def new_post(board_name):
                 session.add(post)
             return redirect(url_for('get_board', board_name=board_name))
     elif request.method == 'GET':
-        return render_template('write_post.html', name=board_name,
-                               text=board.text, form=form)
+        return render_template('edit_post.html', name=board_name,
+                               text=board.text, form=form, mode='new')
 
 
 @app.route('/boards/<board_name>/<int:post_id>')
@@ -201,7 +201,7 @@ def get_post(board_name, post_id):
                       .count()
     page = post_cnt // MAX_POSTS_PER_PAGE + 1
 
-    return render_template('view_post.html', board=board, post=post,
+    return render_template('post.html', board=board, post=post,
                            content=html, next_post=next_post,
                            prev_post=prev_post, post_page=page)
 
@@ -229,7 +229,8 @@ def edit_post(board_name, post_id):
     if request.method == 'POST':
         if not form.validate():
             return render_template('edit_post.html', name=board_name,
-                                   text=board.text, form=form, post=post)
+                                   text=board.text, form=form, post=post,
+                                   mode='edit')
         else:
             with session.begin():
                 post.title = form.title.data
@@ -240,7 +241,8 @@ def edit_post(board_name, post_id):
         form.title.data = post.title
         form.content.data = post.content
         return render_template('edit_post.html', name=board_name,
-                               text=board.text, form=form, post=post)
+                               text=board.text, form=form, post=post,
+                               mode='edit')
 
 
 @app.route('/login', methods=['GET', 'POST'])
