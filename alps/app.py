@@ -84,13 +84,14 @@ def index():
     return render_template('index.html', msg='Hello, ALPS!')
 
 
-@app.route('/board/<board_name>')
-def list_board(board_name):
-    return list_board_with_page(board_name=board_name, page=1)
+@app.route('/boards/<board_name>', methods=['GET'])
+def get_board(board_name):
+    page = request.args.get('page')
+    if not page:
+        page = 1
+    else:
+        page = int(page)
 
-
-@app.route('/board/<board_name>/<int:page>')
-def list_board_with_page(board_name, page):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
         abort(404)
@@ -133,8 +134,8 @@ def list_board_with_page(board_name, page):
                            name=board_name)
 
 
-@app.route('/board/<board_name>/write', methods=['GET', 'POST'])
-def write_post(board_name):
+@app.route('/boards/<board_name>/new', methods=['GET', 'POST'])
+def new_post(board_name):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
         abort(404)
@@ -157,14 +158,14 @@ def write_post(board_name):
                         title=form.title.data, content=form.content.data)
             with session.begin():
                 session.add(post)
-            return redirect(url_for('list_board', board_name=board_name))
+            return redirect(url_for('get_board', board_name=board_name))
     elif request.method == 'GET':
         return render_template('write_post.html', name=board_name,
                                text=board.text, form=form)
 
 
-@app.route('/board/<board_name>/post/<int:post_id>')
-def view_post(board_name, post_id):
+@app.route('/boards/<board_name>/<int:post_id>')
+def get_post(board_name, post_id):
     board = session.query(Board).filter_by(name=board_name).first()
     if not board:
         abort(404)
@@ -205,7 +206,7 @@ def view_post(board_name, post_id):
                            prev_post=prev_post, post_page=page)
 
 
-@app.route('/board/<board_name>/post/edit/<int:post_id>',
+@app.route('/boards/<board_name>/<int:post_id>/edit',
            methods=['GET', 'POST'])
 def edit_post(board_name, post_id):
     board = session.query(Board).filter_by(name=board_name).first()
@@ -233,7 +234,7 @@ def edit_post(board_name, post_id):
             with session.begin():
                 post.title = form.title.data
                 post.content = form.content.data
-            return redirect(url_for('view_post', board_name=board_name,
+            return redirect(url_for('get_post', board_name=board_name,
                                     post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title

@@ -58,7 +58,7 @@ $(document).ready(function() {
 					<h4><i class="icon-pencil"></i> 글 쓰기 - {{ text }}</h4>
 				</div>
 				<div class="widget-content">
-					<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('write_post', board_name=name) }}" method="POST">
+					<form id="edit-form" class="form-horizontal row-border" action="{{ url_for('new_post', board_name=name) }}" method="POST">
 						<!-- Input Fields -->
 						{{ render_write_field(field=form.title) }}
 						{{ render_write_field(field=form.content, id='post_content', hidden=True) }}

@@ -12,7 +12,7 @@
 		</div>
 		{% if writable %}
 		<div class="page-title" style="float: right">
-			<a href="{{ url_for('write_post', board_name=name) }}" class="btn btn-primary" role="button">글쓰기</a>
+			<a href="{{ url_for('new_post', board_name=name) }}" class="btn btn-primary" role="button">글쓰기</a>
 		</div>
 		{% endif %}
 	</div>
@@ -40,7 +40,7 @@
 							<tr>
 								<td>{{ post.id }}</td>
 								{% if readable %}
-									<td><a href="{{ url_for('view_post', board_name=name, post_id=post.id) }}">{{ post.title }}</a></td>
+									<td><a href="{{ url_for('get_post', board_name=name, post_id=post.id) }}">{{ post.title }}</a></td>
 								{% else %}
 									<td>{{ post.title }}</td>
 								{% endif %}
@@ -74,7 +74,7 @@
 					<ul class="pagination custom-page-margin">
 						{% if has_left %}
 							<li>
-								<a href="{{ url_for('list_board_with_page', board_name=name, page=start_page-1) }}">&larr; 이전</a>
+								<a href="{{ url_for('get_board', board_name=name, page=start_page-1) }}">&larr; 이전</a>
 							</li>
 						{% else %}
 							<li class="disabled">
@@ -85,13 +85,13 @@
 						{% for page_num in range(start_page, end_page) %}
 							{% if page_num == current_page %}
 								<li class="active">
-									<a href="{{ url_for('list_board_with_page', board_name=name, page=page_num) }}">
+									<a href="{{ url_for('get_board', board_name=name, page=page_num) }}">
 										{{ page_num }}
 									</a>
 								</li>
 							{% else %}
 								<li>
-									<a href="{{ url_for('list_board_with_page', board_name=name, page=page_num) }}">
+									<a href="{{ url_for('get_board', board_name=name, page=page_num) }}">
 										{{ page_num }}
 									</a>
 								</li>
@@ -100,7 +100,7 @@
 
 						{% if has_right %}
 							<li>
-								<a href="{{ url_for('list_board_with_page', board_name=name, page=end_page) }}">다음 &rarr;</a>
+								<a href="{{ url_for('get_board', board_name=name, page=end_page) }}">다음 &rarr;</a>
 							</li>
 						{% else %}
 							<li class="disabled">

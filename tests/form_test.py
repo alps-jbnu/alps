@@ -44,7 +44,7 @@ def post_register_form(fx_flask_client, **kwargs):
 
 def post_write_form(fx_flask_client, board, title, content):
     response = fx_flask_client.post(
-        url_for('write_post', board_name=board.name),
+        url_for('new_post', board_name=board.name),
         data=dict(title=title,
                   content=content),
         follow_redirects=True

@@ -38,18 +38,18 @@ def test_board_permission(fx_session, fx_request_context, fx_users,
 
     # 자유게시판에 글쓰기한다.
     response = fx_flask_client.get(
-        url_for('write_post', board_name=fx_boards.free_board.name)
+        url_for('new_post', board_name=fx_boards.free_board.name)
     ).data.decode(encoding='utf-8')
     assert '404' not in response
 
     # 회원게시판에 글쓰기한다.
     response = fx_flask_client.get(
-        url_for('write_post', board_name=fx_boards.member_board.name)
+        url_for('new_post', board_name=fx_boards.member_board.name)
     ).data.decode(encoding='utf-8')
     assert '404' not in response
 
     # 임원게시판에 글쓰기한다.
     response = fx_flask_client.get(
-        url_for('write_post', board_name=fx_boards.executive_board.name)
+        url_for('new_post', board_name=fx_boards.executive_board.name)
     ).data.decode(encoding='utf-8')
     assert '404' in response
