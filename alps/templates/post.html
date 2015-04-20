@@ -20,6 +20,7 @@
 							<a href="{{ url_for('edit_post', board_name=board.name, post_id=post.id) }}" class="btn btn-xs">
 								<i class="icon-pencil"></i> 수정
 							</a>
+							<a data-toggle="modal" href="#deleteModal" class="btn btn-xs"><i class="icon-trash"></i> 삭제</a>
 							<a href="{{ url_for('get_board', board_name=board.name, page=post_page) }}" class="btn btn-xs">
 								<i class="icon-reorder"></i> 목록
 							</a>
@@ -46,4 +47,32 @@
 		</div>
 	</div>
 	<!--=== /Page Content ===-->
+
+	<form id="delete-form" class="hidden" action="{{ url_for('delete_post', board_name=board.name, post_id=post.id) }}" method="POST">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+	</form>
+	<div class="modal fade" id="deleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">글 삭제</h4>
+				</div>
+				<div class="modal-body">
+					정말 삭제하시겠습니까?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">아니오</button>
+					<button id="delete-btn" type="button" class="btn btn-primary" data-dismiss="modal">네</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<script>
+		$('#delete-btn').click(function() {
+			var form = $('#delete-form');
+			form.submit();
+		});
+	</script>
 {% endblock %}

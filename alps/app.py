@@ -245,6 +245,29 @@ def edit_post(board_name, post_id):
                                mode='edit')
 
 
+@app.route('/boards/<board_name>/<int:post_id>/delete', methods=['POST'])
+def delete_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writeable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writeable = True
+    if not writeable:
+        abort(404)
+
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
+    if not post:
+        abort(404)
+
+    with session.begin():
+        session.delete(post)
+
+    return redirect(url_for('get_board', board_name=board_name))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = SignInForm()
