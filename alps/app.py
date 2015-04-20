@@ -218,11 +218,14 @@ def edit_post(board_name, post_id):
         if current_user.member_type >= board.write_permission:
             writeable = True
     if not writeable:
-        abort(404)
+        abort(401)
 
     post = session.query(Post).filter_by(id=post_id, board=board).first()
     if not post:
         abort(404)
+
+    if current_user != post.user:
+        abort(401)
 
     form = WritingPostForm()
 
@@ -256,11 +259,14 @@ def delete_post(board_name, post_id):
         if current_user.member_type >= board.write_permission:
             writeable = True
     if not writeable:
-        abort(404)
+        abort(401)
 
     post = session.query(Post).filter_by(id=post_id, board=board).first()
     if not post:
         abort(404)
+
+    if current_user != post.user:
+        abort(401)
 
     with session.begin():
         session.delete(post)
