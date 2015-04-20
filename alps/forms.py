@@ -28,6 +28,8 @@ __all__ = (
     'SignUpForm',
     'student_number_char_msg',
     'student_number_len_msg',
+    'title_len_msg',
+    'WritingPostForm',
 )
 
 
@@ -143,6 +145,9 @@ dept_len_msg = '학부(과) 이름이 너무 깁니다.'
 dept_len_validator = OptionalLength(max=30,
                                     message=dept_len_msg)
 
+title_len_msg = '제목은 50자 이하로 작성할 수 있습니다.'
+title_len_validator = Length(max=50, message=title_len_msg)
+
 
 class SignInForm(Form):
     username = TextField(label='아이디',
@@ -205,3 +210,10 @@ class SignUpForm(Form):
                                validators=[student_number_char_validator,
                                            student_number_len_validator])
     department = TextField(label='학부(과)', validators=[dept_len_validator])
+
+
+class WritingPostForm(Form):
+    title = TextField(label='제목',
+                      validators=[required_validator,
+                                  title_len_validator])
+    content = TextAreaField(label='내용')

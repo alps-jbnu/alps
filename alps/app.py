@@ -1,22 +1,26 @@
 import os
 import pathlib
 
+from bleach import clean
 from flask import abort, Flask, redirect, render_template, request, url_for
-from flask.ext.login import (LoginManager, login_required, login_user,
-                             logout_user)
+from flask.ext.login import (current_user, LoginManager, login_required,
+                             login_user, logout_user)
 from flask.ext.mail import Mail, Message
 from flask_wtf.csrf import CsrfProtect
+from markdown import markdown
 from raven.contrib.flask import Sentry
 
 from alps import ayah
 from alps.config import read_config
 from alps.db import session, setup_session
-from alps.forms import login_error_msg, SignInForm, SignUpForm
+from alps.forms import (login_error_msg, SignInForm, SignUpForm,
+                        WritingPostForm)
 from alps.model import import_all_modules
+from alps.post import Board, Post
 from alps.user import User
 
 
-__all__ = 'app', 'initialize_app', 'login_manager'
+__all__ = 'app', 'initialize_app', 'login_manager', 'MAX_POSTS_PER_PAGE'
 
 import_all_modules()
 
@@ -26,6 +30,16 @@ setup_session(app)
 login_manager = LoginManager()
 csrf_protect = CsrfProtect()
 mail = Mail()
+
+MAX_POSTS_PER_PAGE = 20
+PAGE_RANGE_LEN = 10
+
+ALLOWED_TAGS = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i',
+                'li', 'ol', 'strong', 'ul', 'img', 'p', 'h1', 'h2', 'h3',
+                'h4', 'h5', 'h6', 'br', 'pre', 'table', 'thead', 'tbody',
+                'tr', 'th', 'td']
+ALLOWED_ATTRIBUTES = {'abbr': ['title'], 'a': ['href', 'title'],
+                      'acronym': ['title'], 'img': ['alt', 'src']}
 
 
 def initialize_app(app=None, config_dict=None):
@@ -70,6 +84,196 @@ def index():
     return render_template('index.html', msg='Hello, ALPS!')
 
 
+@app.route('/boards/<board_name>', methods=['GET'])
+def get_board(board_name):
+    page = request.args.get('page')
+    if not page:
+        page = 1
+    else:
+        page = int(page)
+
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    post_cnt = board.posts.count()
+    max_page = post_cnt // MAX_POSTS_PER_PAGE
+    if (max_page == 0) or (post_cnt % MAX_POSTS_PER_PAGE > 0):
+        max_page += 1
+
+    if (page < 1) or (page > max_page):
+        abort(404)
+
+    posts = board.posts.order_by(Post.created_at.desc()) \
+                       .limit(MAX_POSTS_PER_PAGE) \
+                       .offset(MAX_POSTS_PER_PAGE * (page-1)) \
+                       .all()
+
+    current_page = page
+    start_page = page - ((page-1) % PAGE_RANGE_LEN)
+    last_page = min(start_page + PAGE_RANGE_LEN - 1, max_page)
+    has_left = True if start_page > 1 else False
+    has_right = True if last_page < max_page else False
+
+    writable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writable = True
+
+    readable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.read_permission:
+            readable = True
+
+    return render_template('board.html', title=board.text,
+                           writable=writable, readable=readable, posts=posts,
+                           max_post_cnt=MAX_POSTS_PER_PAGE,
+                           current_page=current_page,
+                           start_page=start_page, end_page=last_page+1,
+                           has_left=has_left, has_right=has_right,
+                           name=board_name)
+
+
+@app.route('/boards/<board_name>/new', methods=['GET', 'POST'])
+def new_post(board_name):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writable = True
+    if not writable:
+        abort(404)
+
+    form = WritingPostForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('edit_post.html', name=board_name,
+                                   text=board.text, form=form, mode='new')
+        else:
+            post = Post(board=board, user=current_user,
+                        title=form.title.data, content=form.content.data)
+            with session.begin():
+                session.add(post)
+            return redirect(url_for('get_board', board_name=board_name))
+    elif request.method == 'GET':
+        return render_template('edit_post.html', name=board_name,
+                               text=board.text, form=form, mode='new')
+
+
+@app.route('/boards/<board_name>/<int:post_id>')
+def get_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    readable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.read_permission:
+            readable = True
+    if not readable:
+        abort(404)
+
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
+    if not post:
+        abort(404)
+
+    next_post = session.query(Post) \
+                       .filter(Post.id > post_id, Post.board_id == board.id) \
+                       .order_by(Post.id.asc()) \
+                       .first()
+    prev_post = session.query(Post) \
+                       .filter(Post.id < post_id, Post.board_id == board.id) \
+                       .order_by(Post.id.desc()) \
+                       .first()
+
+    html = markdown(post.content,
+                    extensions=['markdown.extensions.nl2br',
+                                'markdown.extensions.fenced_code',
+                                'markdown.extensions.tables'])
+    html = clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
+
+    post_cnt = session.query(Post) \
+                      .filter(Post.id > post_id, Post.board_id == board.id) \
+                      .count()
+    page = post_cnt // MAX_POSTS_PER_PAGE + 1
+
+    return render_template('post.html', board=board, post=post,
+                           content=html, next_post=next_post,
+                           prev_post=prev_post, post_page=page)
+
+
+@app.route('/boards/<board_name>/<int:post_id>/edit',
+           methods=['GET', 'POST'])
+def edit_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writeable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writeable = True
+    if not writeable:
+        abort(401)
+
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
+    if not post:
+        abort(404)
+
+    if current_user != post.user:
+        abort(401)
+
+    form = WritingPostForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('edit_post.html', name=board_name,
+                                   text=board.text, form=form, post=post,
+                                   mode='edit')
+        else:
+            with session.begin():
+                post.title = form.title.data
+                post.content = form.content.data
+            return redirect(url_for('get_post', board_name=board_name,
+                                    post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+        return render_template('edit_post.html', name=board_name,
+                               text=board.text, form=form, post=post,
+                               mode='edit')
+
+
+@app.route('/boards/<board_name>/<int:post_id>/delete', methods=['POST'])
+def delete_post(board_name, post_id):
+    board = session.query(Board).filter_by(name=board_name).first()
+    if not board:
+        abort(404)
+
+    writeable = False
+    if current_user.is_authenticated() and current_user.is_active():
+        if current_user.member_type >= board.write_permission:
+            writeable = True
+    if not writeable:
+        abort(401)
+
+    post = session.query(Post).filter_by(id=post_id, board=board).first()
+    if not post:
+        abort(404)
+
+    if current_user != post.user:
+        abort(401)
+
+    with session.begin():
+        session.delete(post)
+
+    return redirect(url_for('get_board', board_name=board_name))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = SignInForm()
@@ -79,7 +283,7 @@ def login():
             return render_template('login.html', form=form,
                                    err_msg=login_error_msg)
         else:
-            login_user(load_user(form.username.data))
+            login_user(load_user(form.username.data), force=True)
             return redirect(request.form.get('next') or url_for('index'))
     elif request.method == 'GET':
         return render_template('login.html', form=form,
@@ -201,3 +405,8 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+
+@app.errorhandler(401)
+def page_unauthorized(e):
+    return render_template('401.html'), 401

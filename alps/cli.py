@@ -9,6 +9,7 @@ from alps.app import app, initialize_app
 from alps.config import read_config
 from alps.db import Base, get_engine
 from alps.dummy import insert_dummy_data
+from alps.fixture import insert_initial_data
 from alps.model import import_all_modules
 
 __all__ = 'main',
@@ -20,10 +21,11 @@ def main():
 
 
 @main.command()
+@option('--host', '-h', type=str)
 @option('--debug', '-d', is_flag=True)
 @option('--port', '-p', type=int)
 @option('--config', '-c', type=Path(exists=True))
-def runserver(debug, port, config):
+def runserver(host, debug, port, config):
     """Run ALPS server"""
 
     if config:
@@ -31,7 +33,7 @@ def runserver(debug, port, config):
         initialize_app(app=app, config_dict=config_dict)
     else:
         print('Running server without specifying config file in options...')
-    app.run(debug=debug, port=port)
+    app.run(debug=debug, port=port, host=host)
 
 
 @main.command()
@@ -98,6 +100,20 @@ def schema(config, database_url):
 
 @main.command()
 @option('--config', '-c', type=Path(exists=True))
+def fixture(config):
+    """Insert essential and initial data to run the server.
+    """
+
+    if config:
+        config_dict = read_config(pathlib.Path(config))
+        initialize_app(app=app, config_dict=config_dict)
+        insert_initial_data(app)
+    else:
+        print('Require config file in option')
+
+
+@main.command()
+@option('--config', '-c', type=Path(exists=True))
 def dummy(config):
     """Insert dummy data for testing purpose.
     Preassumed the DB revision is in head and there are no duplicate records
@@ -107,5 +123,6 @@ def dummy(config):
     if config:
         config_dict = read_config(pathlib.Path(config))
         initialize_app(app=app, config_dict=config_dict)
-
-    insert_dummy_data(app)
+        insert_dummy_data(app)
+    else:
+        print('Require config file in option')

@@ -101,7 +101,7 @@ def fx_users(fx_session):
     )
     f.user_2.set_password('hellohello')
 
-    f.user_3 = User(
+    f.alps_user = User(
         username='alps',
         nickname='알프스',
         email='alps@alps.jbnu.ac.kr',
@@ -113,10 +113,10 @@ def fx_users(fx_session):
         email_validated=True,
         member_type=MemberType.executive.value,
     )
-    f.user_3.set_password('alpspassword')
+    f.alps_user.set_password('alpspassword')
 
     with fx_session.begin():
-        fx_session.add_all([f.user_1, f.user_2, f.user_3])
+        fx_session.add_all([f.user_1, f.user_2, f.alps_user])
     return f
 
 
@@ -124,16 +124,16 @@ def fx_users(fx_session):
 def fx_boards(fx_session):
     f = FixtureModule('fx_boards')
 
-    f.board_1 = Board(name='free', text='자유게시판')
-    f.board_2 = Board(name='member', text='회원게시판',
-                      read_permission=MemberType.member.value,
-                      write_permission=MemberType.member.value)
-    f.board_3 = Board(name='executive', text='임원게시판',
-                      read_permission=MemberType.executive.value,
-                      write_permission=MemberType.executive.value)
+    f.free_board = Board(name='free', text='자유게시판')
+    f.member_board = Board(name='member', text='회원게시판',
+                           read_permission=MemberType.member.value,
+                           write_permission=MemberType.member.value)
+    f.executive_board = Board(name='executive', text='임원게시판',
+                              read_permission=MemberType.executive.value,
+                              write_permission=MemberType.executive.value)
 
     with fx_session.begin():
-        fx_session.add_all([f.board_1, f.board_2, f.board_3])
+        fx_session.add_all([f.free_board, f.member_board, f.executive_board])
     return f
 
 
@@ -141,25 +141,32 @@ def fx_boards(fx_session):
 def fx_posts(fx_session, fx_boards, fx_users):
     f = FixtureModule('fx_posts')
 
-    f.post_1 = Post(
+    f.free_post_1 = Post(
         title='첫 게시글입니다.',
         content='안녕하세요. 테스트를 위한 글입니다.',
         user=fx_users.user_1,
-        board=fx_boards.board_1
+        board=fx_boards.free_board
     )
-    f.post_2 = Post(
-        title='안녕 세상아!',
-        content='야호!',
+    f.member_post_1 = Post(
+        title='회원 여러분께 드릴 말씀이 있습니다.',
+        content='안녕하세요? 같이 열심히 공부해봅시다.',
         user=fx_users.user_2,
-        board=fx_boards.board_2
+        board=fx_boards.member_board
     )
-    f.post_3 = Post(
-        title='Hello, ALPS!',
-        content='I just wanted to say hello',
-        user=fx_users.user_3,
-        board=fx_boards.board_3
+    f.executive_post_1 = Post(
+        title='이 곳은 임원게시판입니다.',
+        content='임원에게만 공개할 중요한 게시글을 이 곳에 작성하세요.',
+        user=fx_users.alps_user,
+        board=fx_boards.executive_board
+    )
+    f.free_post_2 = Post(
+        title='2015 알프스 신입회원 모집',
+        content='신입회원을 모집합니다.',
+        user=fx_users.alps_user,
+        board=fx_boards.free_board
     )
 
     with fx_session.begin():
-        fx_session.add_all([f.post_1, f.post_2, f.post_3])
+        fx_session.add_all([f.free_post_1, f.free_post_2,
+                            f.member_post_1, f.executive_post_1])
     return f

@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{ title }} | ALPS (알프스) - 전북대학교 컴퓨터공학부 알고리즘 스터디 그룹
+{% endblock %}
+
+{% block container %}
+	<!--=== Page Header ===-->
+	<div class="page-header">
+		<div class="page-title">
+			<h3> <strong>&nbsp;{{ title }}</strong></h3>
+		</div>
+		{% if writable %}
+		<div class="page-title" style="float: right">
+			<a href="{{ url_for('new_post', board_name=name) }}" class="btn btn-primary" role="button">글쓰기</a>
+		</div>
+		{% endif %}
+	</div>
+	<!-- /Page Header -->
+
+	<!--=== Page Content ===-->
+	<div class="row">
+		<!--=== Simple Table ===-->
+		<div class="col-md-12">
+			<div class="widget">
+				<div class="widget-content">
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>댓글수</th>
+								<th>작성일</th>
+								<th>갱신일</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for post in posts %}
+							<tr>
+								<td>{{ post.id }}</td>
+								{% if readable %}
+									<td><a href="{{ url_for('get_post', board_name=name, post_id=post.id) }}">{{ post.title }}</a></td>
+								{% else %}
+									<td>{{ post.title }}</td>
+								{% endif %}
+								<td>{{ post.user.nickname }}</td>
+								<td>0</td> {# TODO: Enable comments on a post #}
+								<td>{{ post.format_created_at() }}</td>
+								<td>{{ post.format_created_at() }}</td> {# TODO: Add modified_at column to posts table #}
+							</tr>
+							{% endfor %}
+							{% for i in range(max_post_cnt - posts|length) %}
+							<tr>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- /Simple Table -->
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="widget">
+				<div class="widget-content align-center">
+					<ul class="pagination custom-page-margin">
+						{% if has_left %}
+							<li>
+								<a href="{{ url_for('get_board', board_name=name, page=start_page-1) }}">&larr; 이전</a>
+							</li>
+						{% else %}
+							<li class="disabled">
+								<a>&larr; 이전</a>
+							</li>
+						{% endif %}
+
+						{% for page_num in range(start_page, end_page) %}
+							{% if page_num == current_page %}
+								<li class="active">
+									<a href="{{ url_for('get_board', board_name=name, page=page_num) }}">
+										{{ page_num }}
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{ url_for('get_board', board_name=name, page=page_num) }}">
+										{{ page_num }}
+									</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+
+						{% if has_right %}
+							<li>
+								<a href="{{ url_for('get_board', board_name=name, page=end_page) }}">다음 &rarr;</a>
+							</li>
+						{% else %}
+							<li class="disabled">
+								<a>다음 &rarr;</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+{% endblock %}

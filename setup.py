@@ -15,12 +15,14 @@ def readme():
 # Don't miss a comma in the last line.
 install_requires = {
     'alembic >= 0.7.4',
+    'bleach >= 1.4.1',
     'click >= 3.3',
     'Flask >= 0.10.1',
     'Flask-Login >= 0.2.11',
     'Flask-Mail >= 0.9.1',
     'Flask-WTF >= 0.11',
     'lxml >= 3.4.1',
+    'markdown >= 2.6.1',
     'PyYAML >= 3.11',
     'raven >= 5.2.0',
     'SQLAlchemy >= 0.9.8',

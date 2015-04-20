@@ -42,6 +42,16 @@ def post_register_form(fx_flask_client, **kwargs):
     return response
 
 
+def post_write_form(fx_flask_client, board, title, content):
+    response = fx_flask_client.post(
+        url_for('new_post', board_name=board.name),
+        data=dict(title=title,
+                  content=content),
+        follow_redirects=True
+    )
+    return response
+
+
 proper_register_data = dict(
     username='gil-dong',
     nickname='15학번 홍길동b',
@@ -384,3 +394,57 @@ def test_register_with_improper_len_of_dept(fx_flask_client,
     response = post_register_form(fx_flask_client, **data)
     assert err_cls_re.search(response.data.decode(encoding='utf-8'))
     assert dept_len_msg in response.data.decode(encoding='utf-8')
+
+
+def test_write_post(fx_flask_client,
+                    fx_request_context,
+                    fx_session,
+                    fx_users,
+                    fx_boards):
+    username = 'yesman'
+    password = 'iamayesman'
+    nickname = '그래'
+
+    # login
+    post_login_form(fx_flask_client, username, password)
+
+    # write post
+    title_text = 'My Test Post'
+    content_text = 'My Content'
+    response = post_write_form(fx_flask_client,
+                               board=fx_boards.free_board,
+                               title=title_text,
+                               content=content_text)
+    decoded_res = response.data.decode(encoding='utf-8')
+
+    assert fx_boards.free_board.text in decoded_res
+    assert title_text in decoded_res
+    assert re.compile('<td>\s*{}\s*</td>'.format(nickname)).search(decoded_res)
+    assert not err_cls_re.search(decoded_res)
+
+
+def test_write_post_with_long_title(fx_flask_client,
+                                    fx_request_context,
+                                    fx_session,
+                                    fx_users,
+                                    fx_boards):
+    username = 'yesman'
+    password = 'iamayesman'
+    nickname = '그래'
+
+    # login
+    post_login_form(fx_flask_client, username, password)
+
+    # write post
+    title_text = \
+        'It is a very very long title that has more than 50 characters.'
+    content_text = 'My Content'
+    response = post_write_form(fx_flask_client,
+                               board=fx_boards.free_board,
+                               title=title_text,
+                               content=content_text)
+    decoded_res = response.data.decode(encoding='utf-8')
+
+    assert not re.compile('<td>\s*{}\s*</td>'.format(nickname)) \
+                 .search(decoded_res)
+    assert err_cls_re.search(decoded_res)

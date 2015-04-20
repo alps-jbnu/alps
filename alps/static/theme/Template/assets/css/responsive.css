@@ -42,7 +42,7 @@
 .visible-desktop {
   display: inherit !important;
 }
-@media (min-width: 768px) and (max-width: 979px) {
+@media (min-width: 899px) and (max-width: 979px) {
   .hidden-desktop {
     display: inherit !important;
   }
@@ -56,7 +56,7 @@
     display: none !important;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 898px) {
   .hidden-desktop {
     display: inherit !important;
   }
@@ -135,7 +135,7 @@
     border-right: none;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 898px) {
   .navbar .navbar-brand {
     padding: 10px 20px 10px;
     margin-left: -10px;
@@ -157,7 +157,7 @@
 }
 /* # Tablets to regular desktops
 -------------------------------------------------- */
-@media (min-width: 768px) and (max-width: 979px) {
+@media (min-width: 899px) and (max-width: 979px) {
   #sidebar {
     width: 180px;
     overflow: visible;
@@ -222,7 +222,7 @@
 }
 /* # Phones to portrait tablets and narrow desktops
 -------------------------------------------------- */
-@media (max-width: 767px) {
+@media (max-width: 898px) {
   body {
     padding-left: 0px;
     padding-right: 0px;
